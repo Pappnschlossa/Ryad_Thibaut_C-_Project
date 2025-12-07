@@ -12,7 +12,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , anim(30)
+    , ball(30)
 {
     ui->setupUi(this);
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
@@ -27,16 +27,16 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow :: setText(QString s){
-    float maxR = anim.getRadius();
+    float maxR = ball.getRadius();
 
     ui -> label->setText(s);
 
 }
 
 void MainWindow :: revFall(){
-    anim.getP().setCoords(60,60);
-    anim.getV().setCoords(10,-10);
-    //std :: cout << anim.getV();
+    ball.getP().setCoords(660,100);
+    ball.getV().setCoords(10,0);
+    //std :: cout << ball.getV();
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
@@ -47,27 +47,29 @@ void MainWindow :: revFall(){
 
 
 
-void MainWindow :: moveBall(Fruit& anim){
+void MainWindow :: moveBall(Fruit& ball){
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     int maxHeight = screenGeometry.height();
     int maxWidth = screenGeometry.width();
 
-    float r = anim.getRadius();
+    float r = ball.getRadius();
 
 
-    if(anim.getP().getY() + r > maxHeight){
-
-        anim.getV().setY(- anim.getV().getY() ) ;
+    if(ball.getP().getY() + 2*r > maxHeight){
+        if (ball.getV().getY() > 0) {
+            ball.getV().setY(- ball.getV().getY() ) ;
+            setText((ball.getV().toString() + ball.getP().toString() + std::to_string(maxHeight)).data() );
+        }
     }
 
-    if(anim.getP().getX() + r > maxWidth || anim.getP().getX() < r){
-        anim.getV().setX(-anim.getV().getX());
+    if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r){
+        ball.getV().setX(-ball.getV().getX());
     }
     QPainterPath OuterPath;
 
     OuterPath.setFillRule(Qt::WindingFill);
-    OuterPath.addEllipse(QPointF(anim.getP().getX() - r,anim.getP().getY() - r), 2*r, 2*r);
+    OuterPath.addEllipse(QPointF(ball.getP().getX() - r,ball.getP().getY() - r), 2*r, 2*r);
     QPainterPath FillPath = OuterPath;
 
     QPainter Painter(this);
@@ -76,11 +78,14 @@ void MainWindow :: moveBall(Fruit& anim){
 
     Painter.fillPath(FillPath, Qt::blue);
 
-    anim.accelerate();
-    //    std :: cout << "a is : " << accel[0] << " , " << accel[1] << "\n";
-    //std :: cout << "v is : " << anim.getV()[0] << " , " << anim.getV()[1] << " r is " << r << "\n";
+    if (ball.getP().getY() + r > maxHeight ) {
+        ball.getAccel().setY(0);
+    }else {
+        ball.getAccel().setY(ball.getG());
+    }
+    ball.accelerate();
 
-    anim.moveP(anim.getV());
+    ball.moveP(ball.getV());
 }
 
 
@@ -89,15 +94,17 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 
     if(falling){
 
-        moveBall(anim);
-        setText(anim.getAccel().toString().data());
-        /**moveBall(anim2);
-        if(isTouching(anim,anim2)){
-            float dist = anim.getRadius();
-            float newX[2]  = {anim.getP()[0]-  dist, anim.getP()[1]};
-            anim.setP(newX);
-            unitaryDir(anim,anim2);
-            unitaryDir(anim2,anim);
+        moveBall(ball);
+        //setText(ball.getV().toString().data());
+
+
+        /**moveBall(ball2);
+        if(isTouching(ball,ball2)){
+            float dist = ball.getRadius();
+            float newX[2]  = {ball.getP()[0]-  dist, ball.getP()[1]};
+            ball.setP(newX);
+            unitaryDir(ball,ball2);
+            unitaryDir(ball2,ball);
             setText("touched! ");
         }*/
         // sleep 5s

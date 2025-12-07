@@ -66,6 +66,10 @@ public:
         return rad;
     }
 
+    const float getG() const {
+        return g;
+    }
+
 private:
     float g = 1;
     Vector accel = Vector(0,g);

@@ -29,34 +29,19 @@ public slots:
 
     void paintEvent(QPaintEvent *event);
 
-    bool isTouching(Fruit anim, Fruit anim2){
-        float maxR = anim.getRadius();
-        if(abs(anim.getP().getX() - anim2.getP().getX()) < maxR && abs(anim.getP().getY() - anim2.getP().getY()) < maxR ){
+    bool isTouching(Fruit ball, Fruit ball2){
+        float maxR = ball.getRadius();
+        if(abs(ball.getP().getX() - ball2.getP().getX()) < maxR && abs(ball.getP().getY() - ball2.getP().getY()) < maxR ){
             return true;
         }
         return false;
     }
 
 
-    void moveBall(Fruit& anim);
+    void moveBall(Fruit& ball);
 
-    /**float distance(Fruit a, Fruit b){
-        const float* p_a = a.getP();
-        const float* p_b = b.getP();
-        const float X[2] = {p_b[0] - p_a[0], p_b[1] - p_a[1]};
-        return sqrt(X[0]*X[0] + X[1]*X[1]);
-    }*/
 
-    /**void unitaryDir(Fruit a, Fruit b){
-        const float* p_a = a.getP();
-        const float* p_b = b.getP();
-        float d = distance(a,b) + 10;
-        float coef_a = a.normV()/d;
-        float X[2] = {-(p_b[0] - p_a[0])*coef_a + a.getV()[0], -(p_b[1] - p_a[1])*coef_a + a.getV()[1]};
-        a.setV(X);
 
-    }
-*/
 
 
 private:
@@ -69,8 +54,8 @@ private:
     bool falling = false;
 
 
-    Fruit anim;
-    //Fruit anim2;
+    Fruit ball;
+    //Fruit ball2;
 
 
 
