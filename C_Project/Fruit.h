@@ -2,54 +2,64 @@
 #define FRUIT_H
 
 #include <math.h>
-
+#include "Vector.h"
 
 class Fruit
 {
 public:
-    Fruit(const float radius){
-        float def[2] = {0,1};
-        setAccel(def);
-        def[1] =  0 ;
-        def[0] = 5 ;
-        setV(def);
-        rad = radius;
+    Fruit(const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
+    v(velocity) , accel(accel) , p(position),rad(radius)
+    {
+
+    }
+    Fruit(Vector position) : p(position)
+    {
+
+    }
+    Fruit(float radius) : rad(radius)
+    {
+
     }
 
 
 
     void accelerate(){
-        v[0] += accel[0] ;
-        v[1] += accel[1] ;
+        v = v + accel ;
     }
-    void setV(const float* args){
-        v[0] = args[0];
-        v[1] = args[1];
+    /**void setV(const Vector& a) {
+        v.setCoords(a);
     }
-    void setAccel(const float* args){
-        accel[0] = args[0];
-        accel[1] = args[1];
+    void setAccel(const Vector& a){
+        accel.setCoords(a);
     }
-    void setP(const float* args){
-        p[0] = args[0];
-        p[1] = args[1];
+    void setP(const Vector& a){
+        p.setCoords(a);
+    }*/
+    void moveP(const Vector& args){
+        p = p + args ;
     }
-    void moveP(const float* args){
-        p[0] += args[0];
-        p[1] += args[1];
-    }
-    void changeV(float* u){
+    /**void changeV(float* u){
         float normV = sqrt(getV()[0]*getV()[0] + getV()[1]*getV()[1]);
         float newV[2] = { normV * u[0], normV * u[1]};
         setV(newV);
+    }*/
+    const Vector& getAccel() const {
+        return accel ;
     }
-    float normV (){
-        return sqrt(getV()[0]*getV()[0] + getV()[1]*getV()[1]); ;
-    }
-    const float * getV(){
+    const Vector& getV() const {
         return v ;
     }
-    const float *getP(){
+    const Vector& getP() const{
+        return p ;
+    }
+
+    Vector& getAccel() {
+        return accel ;
+    }
+    Vector& getV() {
+        return v ;
+    }
+    Vector& getP(){
         return p ;
     }
     const float getRadius(){
@@ -57,10 +67,12 @@ public:
     }
 
 private:
-    float* accel = new float[2];
-    float* v = new float[2];
-    float* p = new float[2];
-    float rad;
+    float g = 1;
+    Vector accel = Vector(0,g);
+    Vector v = Vector(0,0);
+    Vector p =  Vector(10,10);;
+    float rad = 10;
+
 };
 
 #endif // FRUIT_H

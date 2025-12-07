@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
     QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
 
-    anim.setP(new float[] {60,60});
+
 }
 
 MainWindow::~MainWindow()
@@ -29,11 +29,14 @@ MainWindow::~MainWindow()
 void MainWindow :: setText(QString s){
     float maxR = anim.getRadius();
 
-    ui -> label->setText(ui -> label->text() + s);
+    ui -> label->setText(s);
 
 }
 
 void MainWindow :: revFall(){
+    anim.getP().setCoords(60,60);
+    anim.getV().setCoords(10,-10);
+    //std :: cout << anim.getV();
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
@@ -44,7 +47,7 @@ void MainWindow :: revFall(){
 
 
 
-void MainWindow :: moveBall(Fruit anim){
+void MainWindow :: moveBall(Fruit& anim){
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     int maxHeight = screenGeometry.height();
@@ -53,21 +56,18 @@ void MainWindow :: moveBall(Fruit anim){
     float r = anim.getRadius();
 
 
-    if(anim.getP()[1] + r > maxHeight){
-        const float * v = anim.getV();
-        float newV[2] = {v[0],-v[1] - 1};
-        anim.setV(newV);
+    if(anim.getP().getY() + r > maxHeight){
+
+        anim.getV().setY(- anim.getV().getY() ) ;
     }
 
-    if(anim.getP()[0] + r > maxWidth || anim.getP()[0] < r){
-        const float * v = anim.getV();
-        float newV[2] = {-v[0],v[1]};
-        anim.setV(newV);
+    if(anim.getP().getX() + r > maxWidth || anim.getP().getX() < r){
+        anim.getV().setX(-anim.getV().getX());
     }
     QPainterPath OuterPath;
 
     OuterPath.setFillRule(Qt::WindingFill);
-    OuterPath.addEllipse(QPointF(anim.getP()[0] - r,anim.getP()[1] - r), 2*r, 2*r);
+    OuterPath.addEllipse(QPointF(anim.getP().getX() - r,anim.getP().getY() - r), 2*r, 2*r);
     QPainterPath FillPath = OuterPath;
 
     QPainter Painter(this);
@@ -90,6 +90,7 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     if(falling){
 
         moveBall(anim);
+        setText(anim.getAccel().toString().data());
         /**moveBall(anim2);
         if(isTouching(anim,anim2)){
             float dist = anim.getRadius();

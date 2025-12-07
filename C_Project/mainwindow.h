@@ -31,23 +31,23 @@ public slots:
 
     bool isTouching(Fruit anim, Fruit anim2){
         float maxR = anim.getRadius();
-        if(abs(anim.getP()[0] - anim2.getP()[0]) < maxR && abs(anim.getP()[1] - anim2.getP()[1]) < maxR ){
+        if(abs(anim.getP().getX() - anim2.getP().getX()) < maxR && abs(anim.getP().getY() - anim2.getP().getY()) < maxR ){
             return true;
         }
         return false;
     }
 
 
-    void moveBall(Fruit anim);
+    void moveBall(Fruit& anim);
 
-    float distance(Fruit a, Fruit b){
+    /**float distance(Fruit a, Fruit b){
         const float* p_a = a.getP();
         const float* p_b = b.getP();
         const float X[2] = {p_b[0] - p_a[0], p_b[1] - p_a[1]};
         return sqrt(X[0]*X[0] + X[1]*X[1]);
-    }
+    }*/
 
-    void unitaryDir(Fruit a, Fruit b){
+    /**void unitaryDir(Fruit a, Fruit b){
         const float* p_a = a.getP();
         const float* p_b = b.getP();
         float d = distance(a,b) + 10;
@@ -56,7 +56,7 @@ public slots:
         a.setV(X);
 
     }
-
+*/
 
 
 private:
