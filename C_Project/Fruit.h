@@ -70,6 +70,16 @@ public:
         return g;
     }
 
+    std :: string bounce(Vector n) {
+        std :: string s ;
+        s +=  v.toString() + " is v \n" ;
+        v = v + n * (2* (v*n)) ;
+        s += n.toString() + " is n \n" ;
+        s+= v.toString() + " is v after \n" ;
+        return s;
+
+    }
+
 private:
     float g = 1;
     Vector accel = Vector(0,g);

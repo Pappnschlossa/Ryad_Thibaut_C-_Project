@@ -35,7 +35,7 @@ void MainWindow :: setText(QString s){
 
 void MainWindow :: revFall(){
     ball.getP().setCoords(660,100);
-    ball.getV().setCoords(10,0);
+    ball.getV().setCoords(0,0);
     //std :: cout << ball.getV();
 
     QTimer *timer = new QTimer(this);
@@ -44,6 +44,7 @@ void MainWindow :: revFall(){
     timer->start(10);
     update();
 }
+
 
 
 
@@ -56,10 +57,12 @@ void MainWindow :: moveBall(Fruit& ball){
     float r = ball.getRadius();
 
 
-    if(ball.getP().getY() + 2*r > maxHeight){
+    if(abs(ball.getP().getY() + 2*r - maxHeight ) < 5){
         if (ball.getV().getY() > 0) {
-            ball.getV().setY(- ball.getV().getY() ) ;
+            /**ball.getV().setY(- ball.getV().getY() ) ;
             setText((ball.getV().toString() + ball.getP().toString() + std::to_string(maxHeight)).data() );
+            */
+            setText(ball.bounce(Vector(1/sqrt(2),-1/sqrt(2))).data() );
         }
     }
 

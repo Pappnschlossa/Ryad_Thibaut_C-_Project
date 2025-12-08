@@ -44,6 +44,10 @@ public:
         return _x*v.getX() + _y*v.getY();
     }
 
+    inline Vector operator *(float scalar) const { //dot product will be *
+        return {_x*scalar , _y*scalar};
+    }
+
     //inline float Norm(const Vector& v) {return math.sqrt( v.x*v.x + v.y*v.y + v.z*v.z);}
 
 
@@ -51,6 +55,9 @@ public:
         return {_x + v1.getX(), _y + v1.getY() };
     }
 
+    inline Vector operator-(const Vector& v1) {
+        return {_x - v1.getX(), _y - v1.getY() };
+    }
     inline std::ostream& operator<<(std::ostream& out) {
         return out << " " << _x << " " << _y  << "\n";
     }
