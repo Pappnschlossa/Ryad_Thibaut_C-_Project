@@ -8,6 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+find_package(QT6 REQUIRED COMPONENTS Widgets)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
@@ -17,12 +18,15 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        Vector.cpp
+        Vector.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(C_Project
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        Fruit.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET C_Project APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
