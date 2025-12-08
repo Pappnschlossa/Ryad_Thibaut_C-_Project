@@ -57,12 +57,12 @@ void MainWindow :: moveBall(Fruit& ball){
     float r = ball.getRadius();
 
 
-    if(abs(ball.getP().getY() + 2*r - maxHeight ) < 5){
+    if(ball.getP().getY() + 2*r >  maxHeight ){
         if (ball.getV().getY() > 0) {
-            /**ball.getV().setY(- ball.getV().getY() ) ;
+            ball.getV().setY(- ball.getV().getY() ) ;
             setText((ball.getV().toString() + ball.getP().toString() + std::to_string(maxHeight)).data() );
-            */
-            setText(ball.bounce(Vector(1/sqrt(2),-1/sqrt(2))).data() );
+
+            //setText(ball.bounce(Vector(1/sqrt(2),-1/sqrt(2))).data() );
         }
     }
 
