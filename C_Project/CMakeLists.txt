@@ -8,7 +8,6 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_PREFIX_PATH "C:/Users/ryadg/Documents/school/info/Zanni/C++/Qt/6.10.0/mingw_64")
 find_package(QT6 REQUIRED COMPONENTS Widgets)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
