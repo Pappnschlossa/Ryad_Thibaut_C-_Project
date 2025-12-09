@@ -56,17 +56,21 @@ void MainWindow :: moveBall(Fruit& ball){
 
     float r = ball.getRadius();
 
-
-    if(ball.getP().getY() + 2*r >  maxHeight ){
+    //setText(QString(std::to_string(cos(1)).data() ) );
+    if(ball.getP().getY() + 2*r  >  maxHeight && ball.getV().getX() == 0){
         if (ball.getV().getY() > 0) {
-            ball.getV().setY(- ball.getV().getY() ) ;
-            setText((ball.getV().toString() + ball.getP().toString() + std::to_string(maxHeight)).data() );
-
-            //setText(ball.bounce(Vector(1/sqrt(2),-1/sqrt(2))).data() );
+            float theta = M_PI/2 - 0.01;
+            ball.bounce(Vector(cos(theta),sin(theta)));
+        }
+    } else {
+        if (ball.getV().getY() > 0 && ball.getP().getY() + 2*r  >  maxHeight) {
+            setText(ball.bounce(Vector(0,-1)).data());
+        }else {
+            ball.accelerate();
         }
     }
 
-    if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r){
+    if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r) {
         ball.getV().setX(-ball.getV().getX());
     }
     QPainterPath OuterPath;
@@ -86,7 +90,6 @@ void MainWindow :: moveBall(Fruit& ball){
     }else {
         ball.getAccel().setY(ball.getG());
     }
-    ball.accelerate();
 
     ball.moveP(ball.getV());
 }
