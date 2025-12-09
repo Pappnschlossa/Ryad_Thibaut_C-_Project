@@ -25,26 +25,41 @@ public:
 
     void setX(const float x) {
         _x = x ;
+        setSquaredLength();
     }
 
     void setY(const float y) {
         _y = y ;
+        setSquaredLength();
     }
 
     void setCoords(const Vector& v) {
         _x = v.getX();
         _y = v.getY();
+        setSquaredLength();
     }
     void setCoords(const float x ,const float y) {
         _x = x;
         _y = y;
+        setSquaredLength();
     }
+
+     float getSquaredLength() const {
+        return norm ;
+    }
+
+    void setSquaredLength() {
+        norm = (*this)*(*this) ;
+    }
+
+
 
     inline float operator *(const Vector & v) const { //dot product will be *
         return _x*v.getX() + _y*v.getY();
     }
 
-    inline Vector operator *(float scalar) const { //dot product will be *
+    inline Vector operator *(const float scalar) { //dot product will be *
+        norm *= scalar ;
         return {_x*scalar , _y*scalar};
     }
 
@@ -58,6 +73,8 @@ public:
     inline Vector operator-(const Vector& v1) {
         return {_x - v1.getX(), _y - v1.getY() };
     }
+
+
     inline std::ostream& operator<<(std::ostream& out) {
         return out << " " << _x << " " << _y  << "\n";
     }
@@ -74,9 +91,11 @@ public:
     }
 
 
+
 private:
     float _x;
     float _y;
+    float norm ;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vector& v) {
