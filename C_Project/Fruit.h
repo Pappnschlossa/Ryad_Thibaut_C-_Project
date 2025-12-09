@@ -7,7 +7,7 @@
 class Fruit
 {
 public:
-    Fruit(const float radius,Vector& velocity , Vector& accel  , Vector& position,float dt ) :
+    Fruit(const float dt, const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
     v(velocity) , accel(accel) , p(position),rad(radius),dt(dt)
     {
 
@@ -16,19 +16,18 @@ public:
     {
 
     }
-    Fruit(float radius) : rad(radius)
+    Fruit(float dt) : dt(dt)
     {
-
     }
 
 
 
     void accelerate(){
-        v = v + accel ;
+        v = v + accel*dt ;
     }
 
     void moveP(const Vector& args){
-        p = p + args ;
+        p = p + args * dt ;
     }
 
     const Vector& getAccel() const {
@@ -58,20 +57,18 @@ public:
         return g;
     }
 
-    std :: string bounce(Vector n) {
+    void bounce(const Vector& n)  {
 
-        std :: string s ;
-        s +=  v.toString() + " is v \n" ;
-        float sc = v*n ;
-        v = v - n * 2 * sc ;
-        s += n.toString() + " is n \n" ;
-        s+= v.toString() + " is v after \n" ;
-        return s;
-
+        v = v - n * 2 * (v*n) ;
     }
+    void nonElasticBounce(const Vector& p_exp)  {
+        v = (p_exp - p)*(1/dt) ;
+    }
+    
+
 
 private:
-    float g = 1;
+    float g = 9.81;
     float dt;
     Vector accel = Vector(0,g);
     Vector v = Vector(0,0);

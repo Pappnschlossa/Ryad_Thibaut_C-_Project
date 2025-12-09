@@ -8,12 +8,15 @@
 #include <math.h>
 #include <qstring.h>
 
+
+
 class Vector {
 public:
     Vector(float x, float y) : _x(x) , _y(y) {}
     Vector(Vector& v) : _x(v.getX()), _y(v.getY()) {}
 
-    ~Vector(){};
+    ~Vector(){}
+
 
     const float getX() const {
         return _x;
@@ -58,8 +61,7 @@ public:
         return _x*v.getX() + _y*v.getY();
     }
 
-    inline Vector operator *(const float scalar) { //dot product will be *
-        norm *= scalar ;
+    inline Vector operator *(const float scalar) const { //dot product will be *
         return {_x*scalar , _y*scalar};
     }
 
@@ -70,7 +72,7 @@ public:
         return {_x + v1.getX(), _y + v1.getY() };
     }
 
-    inline Vector operator-(const Vector& v1) {
+    inline Vector operator-(const Vector& v1) const {
         return {_x - v1.getX(), _y - v1.getY() };
     }
 

@@ -12,7 +12,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , ball(30)
+    , ball(0.1)
 {
     ui->setupUi(this);
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
@@ -35,13 +35,13 @@ void MainWindow :: setText(QString s){
 
 void MainWindow :: revFall(){
     ball.getP().setCoords(660,100);
-    ball.getV().setCoords(0,0);
+    ball.getV().setCoords(-10,0);
     //std :: cout << ball.getV();
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
     falling = !falling;
-    timer->start(10);
+    timer->start(16);
     update();
 }
 
@@ -51,24 +51,27 @@ void MainWindow :: revFall(){
 void MainWindow :: moveBall(Fruit& ball){
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
-    int maxHeight = screenGeometry.height();
-    int maxWidth = screenGeometry.width();
+    float maxHeight = screenGeometry.height()/2;
+    float maxWidth = screenGeometry.width();
 
     float r = ball.getRadius();
 
     //setText(QString(std::to_string(cos(1)).data() ) );
-    if(ball.getP().getY() + 2*r  >  maxHeight && ball.getV().getX() == 0){
+    /**if(ball.getP().getY() + 2*r  >  maxHeight/2 && ball.getV().getX() == 0){
         if (ball.getV().getY() > 0) {
             float theta = M_PI/2 - 0.01;
             ball.bounce(Vector(cos(theta),sin(theta)));
         }
     } else {
-        if (ball.getV().getY() > 0 && ball.getP().getY() + 2*r  >  maxHeight) {
-            setText(ball.bounce(Vector(0,-1)).data());
+    */
+        if (ball.getV().getY() > 0 && ball.getP().getY() + r  >  maxHeight) {
+            //ball.bounce(Vector(0,-1));
+            ball.nonElasticBounce(Vector( ball.getP().getX() ,maxHeight -  r ));
+            ball.getP().setY(maxHeight - r);
         }else {
             ball.accelerate();
         }
-    }
+    //}
 
     if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r) {
         ball.getV().setX(-ball.getV().getX());
