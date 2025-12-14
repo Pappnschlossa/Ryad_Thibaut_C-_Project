@@ -47,12 +47,13 @@ public:
         setSquaredLength();
     }
 
-     float getSquaredLength() const {
-        return norm ;
+     void setSquaredLength()  {
+        norm = (*this)*(*this) ;
+
     }
 
-    void setSquaredLength() {
-        norm = (*this)*(*this) ;
+    float getSquaredLength() const {
+        return  (*this)*(*this) ;
     }
 
 

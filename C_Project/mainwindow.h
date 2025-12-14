@@ -38,7 +38,7 @@ public slots:
     }
 
 
-    void moveBall(Fruit& ball);
+    void moveBall(Fruit& ball,int ballIndex);
 
 
 
@@ -56,8 +56,13 @@ private:
     bool falling = false;
 
 
-    Fruit ball;
+    Fruit balls[100] ;
+    int nb_balls = 0 ;
+
+    int i = 0 ;
     //Fruit ball2;
+
+
 
 
 
