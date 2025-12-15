@@ -7,16 +7,20 @@
 
 #include <math.h>
 #include <QTimer>
+#include <QMouseEvent>
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , ball(30)
+    : QMainWindow(parent),
+      ui(new Ui::MainWindow),
+      ball(30),
+      bucketRect(-250,-300,500,600)
 {
     ui->setupUi(this);
+    //setMinimumSize(BASE_WIDTH, BASE_HEIGHT);
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
-    QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
+    //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall())); // Old method : push button to make a ball fall
+
 
 
 }
@@ -33,8 +37,8 @@ void MainWindow :: setText(QString s){
 
 }
 
-void MainWindow :: revFall(){
-    ball.getP().setCoords(660,100);
+void MainWindow::revFall(QPointF pos){
+    ball.getP().setCoords(pos.x(),50);
     ball.getV().setCoords(0,0);
     //std :: cout << ball.getV();
 
@@ -50,9 +54,9 @@ void MainWindow :: revFall(){
 
 void MainWindow :: moveBall(Fruit& ball){
     QScreen *screen = QGuiApplication::primaryScreen();
-    QRect  screenGeometry = screen->geometry();
-    int maxHeight = screenGeometry.height();
-    int maxWidth = screenGeometry.width();
+    // QRect  screenGeometry = screen->geometry();
+    int maxHeight = bucketRect.height();
+    int maxWidth = bucketRect.width();
 
     float r = ball.getRadius();
 
@@ -94,6 +98,22 @@ void MainWindow :: moveBall(Fruit& ball){
 
 void MainWindow :: paintEvent(QPaintEvent *event)
 {
+    QPainter painter(this);
+    float scaleX = width()/float(BASE_WIDTH);
+    float scaleY = height()/float(BASE_WIDTH);
+    float scale = qMin(scaleX, scaleY);
+
+    painter.translate(width() / 2.0, height() / 2.0);
+
+    painter.scale(scale, scale);
+
+    QPen pen(Qt::black);
+    pen.setWidth(6);
+    painter.setPen(pen);
+
+    painter.drawLine(bucketRect.topLeft(), bucketRect.bottomLeft());
+    painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
+    painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
 
     if(falling){
 
@@ -116,3 +136,9 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 }
 
 
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        revFall(event->pos());
+    }
+}

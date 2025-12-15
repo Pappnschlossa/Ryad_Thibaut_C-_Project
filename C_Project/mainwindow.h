@@ -25,7 +25,7 @@ public:
 public slots:
     void setText(QString s);
 
-    void revFall();
+    void revFall(QPointF pos);
 
     void paintEvent(QPaintEvent *event);
 
@@ -58,6 +58,11 @@ private:
 
     Fruit ball;
     //Fruit ball2;
+
+    int BASE_WIDTH  = 800;
+    int BASE_HEIGHT = 600;
+    QRect bucketRect;
+    void mousePressEvent(QMouseEvent *event) override;
 
 
 
