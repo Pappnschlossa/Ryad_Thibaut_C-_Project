@@ -7,8 +7,8 @@
 class Fruit
 {
 public:
-    Fruit(const float radius,Vector& velocity , Vector& accel  , Vector& position,float dt ) :
-    v(velocity) , accel(accel) , p(position),rad(radius),dt(dt)
+    Fruit(const float dt, const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
+    v(velocity) , accel(accel) , p(position),rad(abs(radius)),dt(dt)
     {
 
     }
@@ -16,19 +16,31 @@ public:
     {
 
     }
-    Fruit(float radius) : rad(radius)
+    Fruit(float dt) : dt(dt)
     {
-
     }
+    Fruit(float dt,float radius) : dt(dt), rad(abs(radius))
+    {
+    }
+    Fruit(float dt,float radius,float inMass) : dt(dt), rad(abs(radius)), mass(abs(inMass))
+    {
+    }
+    Fruit() {
+
+    };
 
 
 
     void accelerate(){
-        v = v + accel ;
+        v = v + accel*dt ;
+    }
+
+    void animate() {
+        moveP(v);
     }
 
     void moveP(const Vector& args){
-        p = p + args ;
+        p = p + args * dt ;
     }
 
     const Vector& getAccel() const {
@@ -57,26 +69,53 @@ public:
     const float getG() const {
         return g;
     }
+    float getMass() {
+        return mass ;
+    }
+    void bounce(const Vector& n)  {
 
-    std :: string bounce(Vector n) {
-
-        std :: string s ;
-        s +=  v.toString() + " is v \n" ;
-        float sc = v*n ;
-        v = v - n * 2 * sc ;
-        s += n.toString() + " is n \n" ;
-        s+= v.toString() + " is v after \n" ;
-        return s;
-
+        v = v - n * 2 * (v*n) ;
+    }
+    void nonElasticBounce(const Vector& p_exp)  {
+        v = (p_exp - p)*(1/dt) ;
     }
 
+
+
+    bool collides(Fruit& ball) {
+        if ( sqrt((p - ball.getP()).getSquaredLength() ) < rad + ball.getRadius() ) {
+            return true;
+        }
+        return false;
+    }
+    float colliding(Fruit& ball) {
+        return   sqrt((ball.getP() - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
+    }
+
+
+    void collideWith(Fruit& ball, const float C) {
+        Vector d =  p - ball.getP() ;
+        float n = sqrt(d.getSquaredLength()) ;
+        float sig = ((1/mass)/(1/mass + 1/ball.getMass()))*C ;
+        Vector delta = d * (-sig/n) ;
+        nonElasticBounce(p + delta);
+        //p.setCoords(p + delta ) ;
+        animate();
+    }
+
+
+
+
+
 private:
-    float g = 1;
+    float g = 20000;
     float dt;
+    float mass = 1;
     Vector accel = Vector(0,g);
     Vector v = Vector(0,0);
     Vector p =  Vector(10,10);;
     float rad = 10;
+
 
 };
 
