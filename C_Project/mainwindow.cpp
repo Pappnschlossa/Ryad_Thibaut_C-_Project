@@ -36,7 +36,7 @@ void MainWindow :: setText(QString s){
 
 }
 
-void MainWindow :: revFall(QPointF pos) {
+void MainWindow::revFall(QPointF pos) {
 
     balls[nb_balls] = Fruit(0.01, 60 + nb_balls,50 + nb_balls);
     balls[nb_balls].getP().setCoords(pos.x()-width()/2,-height()/2);
@@ -55,8 +55,8 @@ void MainWindow :: revFall(QPointF pos) {
 
 
 void MainWindow :: moveBall(Fruit& ball,int ballIndex){
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QRect  screenGeometry = screen->geometry();
+    // QScreen *screen = QGuiApplication::primaryScreen();
+    // QRect  screenGeometry = screen->geometry();
     float maxHeight = bucketRect.height()-height()/2;
     float maxWidth = bucketRect.width();
 
@@ -132,9 +132,10 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
 
-    if(falling){
-    for (int i = 0; i  < nb_balls; i++) {
-        moveBall(balls[i],i);
+    if(falling) {
+        for (int i = 0; i  < nb_balls; i++) {
+            moveBall(balls[i],i);
+        }
     }
 
 
