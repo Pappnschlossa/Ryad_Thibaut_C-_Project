@@ -38,7 +38,7 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos){
-    ball.getP().setCoords(pos.x(),50);
+    ball.getP().setCoords(pos.x()-width()/2,-height()/2);
     ball.getV().setCoords(0,0);
     //std :: cout << ball.getV();
 
@@ -55,7 +55,7 @@ void MainWindow::revFall(QPointF pos){
 void MainWindow :: moveBall(Fruit& ball){
     QScreen *screen = QGuiApplication::primaryScreen();
     // QRect  screenGeometry = screen->geometry();
-    int maxHeight = bucketRect.height();
+    int maxHeight = bucketRect.height()-height()/2;
     int maxWidth = bucketRect.width();
 
     float r = ball.getRadius();
@@ -80,6 +80,14 @@ void MainWindow :: moveBall(Fruit& ball){
     QPainterPath FillPath = OuterPath;
 
     QPainter Painter(this);
+
+    float scaleX = width()/float(BASE_WIDTH);
+    float scaleY = height()/float(BASE_WIDTH);
+    float scale = qMin(scaleX, scaleY);
+
+    Painter.translate(width() / 2.0, height() / 2.0);
+
+    Painter.scale(scale, scale);
 
     Painter.setRenderHint(QPainter::Antialiasing);
 
