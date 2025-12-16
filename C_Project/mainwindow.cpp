@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
       bucketRect(-250,-300,500,600)
 {
     ui->setupUi(this);
-
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
     //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall())); // Old method : push button to make a ball fall
 
@@ -37,22 +36,19 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos) {
-
     balls[nb_balls] = Fruit(0.01, 60 + nb_balls,50 + nb_balls);
     balls[nb_balls].getP().setCoords(pos.x()-width()/2,-height()/2);
     balls[nb_balls].getV().setCoords(10,0);
     //std :: cout << ball.getV();
     nb_balls += 1;
     if (nb_balls == 1){
+        is_clicked = true;
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
         timer->start(10);
     }
     update();
 }
-
-
-
 
 void MainWindow :: moveBall(Fruit& ball,int ballIndex){
     // QScreen *screen = QGuiApplication::primaryScreen();
@@ -131,6 +127,9 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.topLeft(), bucketRect.bottomLeft());
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
+    if (is_clicked) {
+        painter.drawLine(bucketRect.bottomRight(), bucketRect.topLeft());
+    }
 
     if(falling) {
         for (int i = 0; i  < nb_balls; i++) {

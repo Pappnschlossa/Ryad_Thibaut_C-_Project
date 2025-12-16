@@ -67,6 +67,8 @@ private:
     QRect bucketRect;
     void mousePressEvent(QMouseEvent *event) override;
 
+    bool is_clicked = false;
+
 
 
 
