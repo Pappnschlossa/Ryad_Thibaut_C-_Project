@@ -7,8 +7,8 @@
 class Fruit
 {
 public:
-    Fruit(const float dt, const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
-    v(velocity) , accel(accel) , p(position),rad(abs(radius)),dt(dt)
+    Fruit( const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
+    v(velocity) , accel(accel) , p(position),rad(abs(radius))
     {
 
     }
@@ -16,13 +16,10 @@ public:
     {
 
     }
-    Fruit(float dt) : dt(dt)
+    Fruit(float radius) :  rad(abs(radius))
     {
     }
-    Fruit(float dt,float radius) : dt(dt), rad(abs(radius))
-    {
-    }
-    Fruit(float dt,float radius,float inMass) : dt(dt), rad(abs(radius)), mass(abs(inMass))
+    Fruit(float radius,float inMass) :  rad(abs(radius)), mass(abs(inMass))
     {
     }
     Fruit() {
@@ -31,15 +28,15 @@ public:
 
 
 
-    void accelerate(){
+    void accelerate(const float& dt){
         v = v + accel*dt ;
     }
 
-    void animate() {
-        moveP(v);
+    void animate(const float& dt) {
+        moveP(v,dt);
     }
 
-    void moveP(const Vector& args){
+    void moveP(const Vector& args,float dt){
         p = p + args * dt ;
     }
 
@@ -76,7 +73,7 @@ public:
 
         v = v - n * 2 * (v*n) ;
     }
-    void nonElasticBounce(const Vector& p_exp)  {
+    void nonElasticBounce(const Vector& p_exp,const float& dt)  {
         v = (p_exp - p)*(1/dt) ;
     }
 
@@ -93,14 +90,14 @@ public:
     }
 
 
-    void collideWith(Fruit& ball, const float C) {
+    void collideWith(Fruit& ball, const float C,const float& dt) {
         Vector d =  p - ball.getP() ;
         float n = sqrt(d.getSquaredLength()) ;
         float sig = ((1/mass)/(1/mass + 1/ball.getMass()))*C ;
         Vector delta = d * (-sig/n) ;
-        nonElasticBounce(p + delta);
+        nonElasticBounce(p + delta,dt);
         //p.setCoords(p + delta ) ;
-        animate();
+        animate(dt);
     }
 
 
@@ -108,8 +105,8 @@ public:
 
 
 private:
-    float g = 20000;
-    float dt;
+    float g = 2000;
+
     float mass = 1;
     Vector accel = Vector(0,g);
     Vector v = Vector(0,0);

@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
     QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
+    createConstraintsManager();
 
 
 }
@@ -27,7 +28,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow :: setText(QString s){
-   // float maxR = ball.getRadius();
+   // float maxR = constraints->getFruit(i).getRadius();
 
     ui -> label->setText(s);
 
@@ -35,15 +36,18 @@ void MainWindow :: setText(QString s){
 
 void MainWindow :: revFall() {
 
-    balls[nb_balls] = Fruit(0.01, 60 + nb_balls,50 + nb_balls);
-    balls[nb_balls].getP().setCoords(400,300);
-    balls[nb_balls].getV().setCoords(10,0);
-    //std :: cout << ball.getV();
-    nb_balls += 1;
-    if (nb_balls == 1){
+    Fruit fruit = Fruit(60 + constraints->getNbFruits(),50 + constraints->getNbFruits()) ;
+
+    fruit.getP().setCoords(400,300);
+    fruit.getV().setCoords(1,0);
+    constraints->addFruit(fruit);
+    //std :: cout << constraints->getFruit(i).getV();
+    if (constraints->getNbFruits() == 1){
+
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
         timer->start(10);
+
     }
     update();
 }
@@ -51,66 +55,40 @@ void MainWindow :: revFall() {
 
 
 
-void MainWindow :: moveBall(Fruit& ball,int ballIndex){
+void MainWindow :: moveBall(){
+    
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     float maxHeight = screenGeometry.height();
     float maxWidth = screenGeometry.width();
+   // std:: cout << "ball0 was : " << constraints->getFruit(0).getP() << "\n" ;
+    constraints->runSimulation(maxHeight,maxWidth);
+    //std:: cout << "ball0 is : " << constraints->getFruit(0).getP() << "\n" ;
 
-    int col = 0 ;
-    float C = 0 ;
-    float r = ball.getRadius();
+    for (int i = 0; i < constraints->getNbFruits() ; i++) {
 
-    if (ball.getV().getY() > 0 && ball.getP().getY() + r  >  maxHeight) {
-        //ball.bounce(Vector(0,-1));
-        ball.nonElasticBounce(Vector( ball.getP().getX() ,maxHeight -  r ));
-        ball.getP().setY(maxHeight - r);
-    }else {
-        ball.accelerate();
-        for (int j = 0; j < nb_balls ; j++) {
-            //std :: cout << C ;
-            //setText(("C is : " + std::to_string(C) ).data()) ;
-            if (ballIndex != j) {
-                C = ball.colliding(balls[j]) ;
-                if (C < 0){
-                    ball.collideWith(balls[j],C);
-                    balls[j].collideWith(ball,C) ;
-                    ball.accelerate();
-                    col = 255 ;
-                }
-            }
-        }
+        QPainterPath OuterPath;
+
+        OuterPath.setFillRule(Qt::WindingFill);
+        std:: cout << "ball i  is at  : " << constraints->getFruit(i).getP() << "\n" ;
+        OuterPath.addEllipse(QPointF(constraints->getFruit(i).getP().getX() - constraints->getFruit(i).getRadius(),constraints->getFruit(i).getP().getY() - constraints->getFruit(i).getRadius()), constraints->getFruit(i).getRadius(), constraints->getFruit(i).getRadius());
+        QPainterPath FillPath = OuterPath;
+    
+        QPainter Painter(this);
+
+        Painter.setRenderHint(QPainter::Antialiasing);
+
+        Painter.fillPath(FillPath, QColor(i*50 % 255,100,0));
+
+
+
     }
-
-//}
-
-    if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r) {
-        ball.getV().setX(-ball.getV().getX());
-    }
-    QPainterPath OuterPath;
-
-    OuterPath.setFillRule(Qt::WindingFill);
-    OuterPath.addEllipse(QPointF(ball.getP().getX() - r,ball.getP().getY() - r), r, r);
-    QPainterPath FillPath = OuterPath;
-
-    QPainter Painter(this);
-
-    Painter.setRenderHint(QPainter::Antialiasing);
-
-    Painter.fillPath(FillPath, QColor(ballIndex*50 % 255,100,0));
-
-
-    ball.moveP(ball.getV());
 }
 
 
 void MainWindow :: paintEvent(QPaintEvent *event)
 {
-    for (int i = 0; i  < nb_balls; i++) {
-        moveBall(balls[i],i);
-    }
-
-
+    moveBall();
 }
 
 

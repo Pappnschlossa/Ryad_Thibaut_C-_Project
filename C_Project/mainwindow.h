@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include <math.h>
 
+#include "ConstraintsManager.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -38,7 +40,7 @@ public slots:
     }
 
 
-    void moveBall(Fruit& ball,int ballIndex);
+    void moveBall();
 
 
 
@@ -55,10 +57,13 @@ private:
 
     bool falling = false;
 
+    void createConstraintsManager() {
+        constraints  =  new ConstraintsManager(*this,nb_balls);
+    }
 
-    Fruit balls[100] ;
+
     int nb_balls = 0 ;
-
+    ConstraintsManager* constraints ;
     int i = 0 ;
     //Fruit ball2;
 
