@@ -42,7 +42,6 @@ void MainWindow::revFall(QPointF pos) {
     //std :: cout << ball.getV();
     nb_balls += 1;
     if (nb_balls == 1){
-        is_clicked = true;
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
         timer->start(10);
@@ -127,15 +126,10 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.topLeft(), bucketRect.bottomLeft());
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
-    if (is_clicked) {
-        painter.drawLine(bucketRect.bottomRight(), bucketRect.topLeft());
-    }
 
     for (int i = 0; i  < nb_balls; i++) {
             moveBall(balls[i],i);
     }
-
-
 }
 
 

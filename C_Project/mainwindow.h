@@ -67,11 +67,6 @@ private:
     QRect bucketRect;
     void mousePressEvent(QMouseEvent *event) override;
 
-    bool is_clicked = false;
-
-
-
-
 
 };
 #endif // MAINWINDOW_H
