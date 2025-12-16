@@ -131,10 +131,8 @@ void MainWindow :: paintEvent(QPaintEvent *event)
         painter.drawLine(bucketRect.bottomRight(), bucketRect.topLeft());
     }
 
-    if(falling) {
-        for (int i = 0; i  < nb_balls; i++) {
+    for (int i = 0; i  < nb_balls; i++) {
             moveBall(balls[i],i);
-        }
     }
 
 
