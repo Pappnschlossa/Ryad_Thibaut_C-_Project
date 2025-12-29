@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
     //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
     createConstraintsManager();
-
-
 }
 
 MainWindow::~MainWindow()
@@ -30,9 +28,7 @@ MainWindow::~MainWindow()
 
 void MainWindow :: setText(QString s){
    // float maxR = constraints->constraints->getFruit(i).getRadius();
-
     ui -> label->setText(s);
-
 }
 
 void MainWindow::revFall(QPointF pos) {
@@ -55,21 +51,11 @@ void MainWindow::revFall(QPointF pos) {
 
 
 void MainWindow :: moveBall(QPainter &Painter){
-    float maxHeight = bucketRect.height()-height()/2 + 60 ; // 60 correspond à r (si on lance une balle)
+    float maxHeight = bucketRect.height()-height()/2 + 50 ; // 60 correspond à r (si on lance une balle)
     float maxWidth = bucketRect.width();
     constraints->runSimulation(maxHeight,maxWidth);
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
-
-        QPainterPath OuterPath;
-
-        OuterPath.setFillRule(Qt::WindingFill);
-        //std:: cout << "ball i  is at  : " << constraints->constraints->getFruit(i).getP() << "\n" ;
-        OuterPath.addEllipse(QPointF(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY()),
-                             constraints->getFruit(i).getRadius(), constraints->getFruit(i).getRadius());
-        std::cout<<constraints->getFruit(i).getRadius()<<std::endl;
-        QPainterPath FillPath = OuterPath;
-
         QPixmap pixmap("../assets/placeholder.png");
 
         //ballsRotation[ballIndex] -= ball.getV().getX()/100;
@@ -80,12 +66,8 @@ void MainWindow :: moveBall(QPainter &Painter){
         //Painter.rotate(ballsRotation[ballIndex]);
         Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
 
-        Painter.fillPath(FillPath, QColor(i*50 % 255,100,0));
-
         Painter.setPen(QPen(Qt::black, 5));
-        Painter.drawLine(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY(),
-                         constraints->getFruit(i).getP().getX() + 10 * constraints->getFruit(i).getV().getX(),
-                         constraints->getFruit(i).getP().getY() + 10 * constraints->getFruit(i).getV().getY());
+        Painter.drawLine(0, 0, 10 * constraints->getFruit(i).getV().getX(),  10 * constraints->getFruit(i).getV().getY());
 
         Painter.restore();
     }
@@ -101,6 +83,7 @@ void MainWindow :: setupWorldTransform(QPainter &painter)
 
     painter.translate(width() / 2.0, height() / 2.0);
     painter.scale(scale, scale);
+    worldToScreen.translate(-BASE_WIDTH / 2.0, -BASE_HEIGHT / 2.0);
 };
 
 void MainWindow :: paintEvent(QPaintEvent *event)

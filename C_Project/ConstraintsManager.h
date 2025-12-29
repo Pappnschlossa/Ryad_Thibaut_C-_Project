@@ -46,8 +46,8 @@ public:
     _fruits[i].getAccel().setY(_fruits[i].getG()) ;
 
     //checks the collision and handles it
-     if( !collidePlan(_fruits[i],Vector(0,0), Vector(1,0),true )
-      && !collidePlan(_fruits[i],Vector(maxWidth,0), Vector(-1,0) , true)
+     if( !collidePlan(_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true )
+      && !collidePlan(_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true)
       && !collidePlan(_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
       _fruits[i].accelerate(dt);
       _fruits[i].moveP(_fruits[i].getV(),dt);
@@ -58,8 +58,8 @@ public:
         if (C < 0) {
          _fruits[i].collideWith(_fruits[j],C,dt);
 
-         if( !collidePlan(_fruits[j],Vector(0,0), Vector(1,0),true )
-          && !collidePlan(_fruits[j],Vector(maxWidth,0), Vector(-1,0) , true)
+         if( !collidePlan(_fruits[j],Vector(-maxWidth/2,0), Vector(1,0),true )
+          && !collidePlan(_fruits[j],Vector(maxWidth/2,0), Vector(-1,0) , true)
           && !collidePlan(_fruits[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
                _fruits[j].collideWith(_fruits[i],C,dt) ;
          }
