@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
     //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
     createConstraintsManager();
+    maxHeightOffset = height()/2;
 }
 
 MainWindow::~MainWindow()
@@ -51,12 +52,12 @@ void MainWindow::revFall(QPointF pos) {
 
 
 void MainWindow :: moveBall(QPainter &Painter){
-    float maxHeight = bucketRect.height()-height()/2;
+    float maxHeight = bucketRect.height()-maxHeightOffset;
     float maxWidth = bucketRect.width();
     constraints->runSimulation(maxHeight,maxWidth);
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
-        QPixmap pixmap("../assets/placeholder.png");
+        QPixmap pixmap("../assets/2.png");
 
         //ballsRotation[ballIndex] -= ball.getV().getX()/100;
         float r = constraints->getFruit(i).getRadius();
