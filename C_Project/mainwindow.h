@@ -57,6 +57,8 @@ private:
 
 
     Fruit balls[100] ;
+    float ballsRotation[100];
+
     int nb_balls = 0 ;
 
     int i = 0 ;

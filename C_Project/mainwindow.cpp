@@ -36,6 +36,7 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos) {
+    ballsRotation[nb_balls] = 0;
     balls[nb_balls] = Fruit(0.01, 60 + nb_balls,50 + nb_balls);
     balls[nb_balls].getP().setCoords(pos.x()-width()/2,-height()/2);
     balls[nb_balls].getV().setCoords(10,0);
@@ -52,14 +53,14 @@ void MainWindow::revFall(QPointF pos) {
 void MainWindow :: moveBall(Fruit& ball,int ballIndex){
     // QScreen *screen = QGuiApplication::primaryScreen();
     // QRect  screenGeometry = screen->geometry();
-    float maxHeight = bucketRect.height()-height()/2;
+    float maxHeight = bucketRect.height()-height()/2 + 60 ; // 60 correspond à r (si on lance une balle)
     float maxWidth = bucketRect.width();
 
     int col = 0 ;
     float C = 0 ;
     float r = ball.getRadius();
-
     if (ball.getV().getY() > 0 && ball.getP().getY() + r  >  maxHeight) {
+        printf("touched 1\n");
         //ball.bounce(Vector(0,-1));
         ball.nonElasticBounce(Vector( ball.getP().getX() ,maxHeight -  r ));
         ball.getP().setY(maxHeight - r);
@@ -99,9 +100,15 @@ void MainWindow :: moveBall(Fruit& ball,int ballIndex){
 
     Painter.scale(scale, scale);
 
-    Painter.setRenderHint(QPainter::Antialiasing);
+    QPixmap pixmap("../assets/placeholder.png");
 
-    Painter.fillPath(FillPath, QColor(ballIndex*50 % 255,100,0));
+    ballsRotation[ballIndex] -= ball.getV().getX()/100;
+    //Painter.save();
+    Painter.translate(ball.getP().getX() + r, ball.getP().getY() + r);
+    Painter.rotate(ballsRotation[ballIndex]);
+    Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
+    //Painter.restore();
+    //Painter.fillPath(FillPath, QColor(ballIndex*50 % 255,100,0));
 
 
     ball.moveP(ball.getV());
@@ -128,7 +135,7 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
 
     for (int i = 0; i  < nb_balls; i++) {
-            moveBall(balls[i],i);
+        moveBall(balls[i],i);
     }
 }
 
