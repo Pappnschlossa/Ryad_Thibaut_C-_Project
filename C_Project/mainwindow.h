@@ -40,7 +40,7 @@ public slots:
     }
 
 
-    void moveBall();
+    void moveBall(QPainter &Painter);
 
     void drawLine() {
         QPainter painter(this);

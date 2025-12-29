@@ -59,7 +59,7 @@ void MainWindow::revFall(QPointF pos) {
 
 
 
-void MainWindow :: moveBall(){
+void MainWindow :: moveBall(QPainter &Painter){
     float maxHeight = bucketRect.height()-height()/2 + 60 ; // 60 correspond à r (si on lance une balle)
     float maxWidth = bucketRect.width();
     //QScreen *screen = QGuiApplication::primaryScreen();
@@ -79,25 +79,12 @@ void MainWindow :: moveBall(){
         OuterPath.addEllipse(QPointF(constraints->getFruit(i).getP().getX(),constraints->getFruit(i).getP().getY() ), constraints->getFruit(i).getRadius(), constraints->getFruit(i).getRadius());
         QPainterPath FillPath = OuterPath;
 
-        QPainter Painter(this);
-
-
-
-        Painter.setRenderHint(QPainter::Antialiasing);
-
-        float scaleX = width()/float(BASE_WIDTH);
-        float scaleY = height()/float(BASE_WIDTH);
-        float scale = qMin(scaleX, scaleY);
-
-        Painter.translate(width() / 2.0, height() / 2.0);
-
-        Painter.scale(scale, scale);
-
         QPixmap pixmap("../assets/placeholder.png");
 
         //ballsRotation[ballIndex] -= ball.getV().getX()/100;
         float temp_merge_r = 50;
         float r = temp_merge_r;
+        Painter.save();
         Painter.translate(constraints->getFruit(i).getP().getX() + r, constraints->getFruit(i).getP().getY() + r);
         //Painter.rotate(ballsRotation[ballIndex]);
         Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
@@ -110,8 +97,7 @@ void MainWindow :: moveBall(){
             Painter.setPen(QPen(Qt::black, 2));
             Painter.drawLine(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY(), constraints->getFruit(i).getP().getX() + 10*constraints->getFruit(i).getV().getX(), constraints->getFruit(i).getP().getY() + 10*constraints->getFruit(i).getV().getY());
         //}
-
-
+        Painter.restore();
     }
 }
 
@@ -138,7 +124,7 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
 
-    moveBall();
+    moveBall(painter);
 }
 
 
