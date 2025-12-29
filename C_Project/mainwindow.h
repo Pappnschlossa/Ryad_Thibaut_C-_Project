@@ -82,6 +82,7 @@ private:
     QTransform screenToWorld;
 
     float maxHeightOffset;
+    float widthOffset;
 
     void mousePressEvent(QMouseEvent *event) override;
 

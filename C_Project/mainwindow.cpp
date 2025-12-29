@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
     createConstraintsManager();
     maxHeightOffset = height()/2;
+    widthOffset = width()/2;
 }
 
 MainWindow::~MainWindow()
@@ -34,7 +35,7 @@ void MainWindow :: setText(QString s){
 
 void MainWindow::revFall(QPointF pos) {
     Fruit fruit = Fruit(50,100) ;
-    fruit.getP().setCoords(pos.x()-width()/2,-height()/2);
+    fruit.getP().setCoords(pos.x(),-maxHeightOffset);
     fruit.getV().setCoords(1,0);
     fruit.id = constraints->getNbFruits() ;
     constraints->addFruit(fruit);
@@ -111,6 +112,6 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        revFall(event->pos());
+        revFall(screenToWorld.map(event->pos()));
     }
 }
