@@ -59,8 +59,7 @@ void MainWindow :: moveBall(QPainter &Painter){
         QPixmap pixmap("../assets/placeholder.png");
 
         //ballsRotation[ballIndex] -= ball.getV().getX()/100;
-        float temp_merge_r = 50;
-        float r = temp_merge_r;
+        float r = constraints->getFruit(i).getRadius();
         Painter.save();
         Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
         //Painter.rotate(ballsRotation[ballIndex]);
