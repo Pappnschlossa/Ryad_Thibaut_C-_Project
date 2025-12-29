@@ -5,6 +5,8 @@
 #include "Fruit.h"
 #include <QMainWindow>
 #include <math.h>
+#include <QPainter>
+#include "ConstraintsManager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,9 +40,13 @@ public slots:
     }
 
 
-    void moveBall(Fruit& ball,int ballIndex);
+    void moveBall();
 
-
+    void drawLine() {
+        QPainter painter(this);
+        painter.setPen(QPen(Qt::black, 12, Qt::DashDotLine, Qt::RoundCap));
+        painter.drawLine(0, 0, 200, 200);
+    }
 
 
 
@@ -55,12 +61,14 @@ private:
 
     bool falling = false;
 
+    void createConstraintsManager() {
+        constraints  =  new ConstraintsManager(*this,nb_balls);
+    }
 
-    Fruit balls[100] ;
-    float ballsRotation[100];
+    //float ballsRotation[100];
 
     int nb_balls = 0 ;
-
+    ConstraintsManager* constraints ;
     int i = 0 ;
     //Fruit ball2;
 

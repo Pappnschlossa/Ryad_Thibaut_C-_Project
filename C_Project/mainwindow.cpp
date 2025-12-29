@@ -16,9 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
       bucketRect(-250,-300,500,600)
 {
     ui->setupUi(this);
-    //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
-    //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall())); // Old method : push button to make a ball fall
 
+    //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
+    //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
+    createConstraintsManager();
 
 
 }
@@ -29,20 +30,25 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow :: setText(QString s){
-   // float maxR = ball.getRadius();
+   // float maxR = constraints->constraints->getFruit(i).getRadius();
 
     ui -> label->setText(s);
 
 }
 
 void MainWindow::revFall(QPointF pos) {
-    ballsRotation[nb_balls] = 0;
-    balls[nb_balls] = Fruit(0.01, 60 + nb_balls,50 + nb_balls);
-    balls[nb_balls].getP().setCoords(pos.x()-width()/2,-height()/2);
-    balls[nb_balls].getV().setCoords(10,0);
-    //std :: cout << ball.getV();
-    nb_balls += 1;
-    if (nb_balls == 1){
+    //ballsRotation[nb_balls] = 0;
+    //balls[nb_balls].getV().setCoords(10,0);
+    //nb_balls += 1;
+    //if (nb_balls == 1){
+    Fruit fruit = Fruit(50,100) ;
+    fruit.getP().setCoords(pos.x()-width()/2,-height()/2);
+    fruit.getV().setCoords(1,0);
+    fruit.id = constraints->getNbFruits() ;
+    constraints->addFruit(fruit);
+
+    //std :: cout << constraints->constraints->getFruit(i).getV();
+    if (constraints->getNbFruits() == 1){
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
         timer->start(10);
@@ -50,68 +56,63 @@ void MainWindow::revFall(QPointF pos) {
     update();
 }
 
-void MainWindow :: moveBall(Fruit& ball, int ballIndex){
-    // QScreen *screen = QGuiApplication::primaryScreen();
-    // QRect  screenGeometry = screen->geometry();
+
+
+
+void MainWindow :: moveBall(){
     float maxHeight = bucketRect.height()-height()/2 + 60 ; // 60 correspond à r (si on lance une balle)
     float maxWidth = bucketRect.width();
+    //QScreen *screen = QGuiApplication::primaryScreen();
+    //QRect  screenGeometry = screen->geometry();
+    // float maxHeight = 3*screenGeometry.height()/4;
+    // float maxWidth = screenGeometry.width();
+    // std:: cout << "ball0 was : " << constraints->constraints->getFruit(0).getP() << "\n" ;
+    constraints->runSimulation(maxHeight,maxWidth);
+    //std:: cout << "ball0 is : " << constraints->constraints->getFruit(0).getP() << "\n" ;
 
-    int col = 0 ;
-    float C = 0 ;
-    float r = ball.getRadius();
-    if (ball.getV().getY() > 0 && ball.getP().getY() + r  >  maxHeight) {
-        printf("touched 1\n");
-        //ball.bounce(Vector(0,-1));
-        ball.nonElasticBounce(Vector(ball.getP().getX() ,maxHeight -  r ));
-        ball.getP().setY(maxHeight - r);
-    }else {
-        ball.accelerate();
-        for (int j = 0; j < nb_balls ; j++) {
-            //std :: cout << C ;
-            //setText(("C is : " + std::to_string(C) ).data()) ;
-            if (ballIndex != j) {
-                C = ball.colliding(balls[j]) ;
-                if (C < 0){
-                    ball.collideWith(balls[j],C);
-                    balls[j].collideWith(ball,C) ;
-                    ball.accelerate();
-                    col = 255 ;
-                }
-            }
-        }
-    }
+    for (int i = 0; i < constraints->getNbFruits() ; i++) {
 
-    if(ball.getP().getX() + r > maxWidth || ball.getP().getX() < r) {
-        ball.getV().setX(-ball.getV().getX());
-    }
-    QPainterPath OuterPath;
+        QPainterPath OuterPath;
 
-    OuterPath.setFillRule(Qt::WindingFill);
-    OuterPath.addEllipse(QPointF(ball.getP().getX() - r,ball.getP().getY() - r), r, r);
-    QPainterPath FillPath = OuterPath;
+        OuterPath.setFillRule(Qt::WindingFill);
+        //std:: cout << "ball i  is at  : " << constraints->constraints->getFruit(i).getP() << "\n" ;
+        OuterPath.addEllipse(QPointF(constraints->getFruit(i).getP().getX(),constraints->getFruit(i).getP().getY() ), constraints->getFruit(i).getRadius(), constraints->getFruit(i).getRadius());
+        QPainterPath FillPath = OuterPath;
 
-    QPainter Painter(this);
+        QPainter Painter(this);
 
-    float scaleX = width()/float(BASE_WIDTH);
-    float scaleY = height()/float(BASE_WIDTH);
-    float scale = qMin(scaleX, scaleY);
 
-    Painter.translate(width() / 2.0, height() / 2.0);
 
-    Painter.scale(scale, scale);
+        Painter.setRenderHint(QPainter::Antialiasing);
 
-    QPixmap pixmap("../assets/placeholder.png");
+        float scaleX = width()/float(BASE_WIDTH);
+        float scaleY = height()/float(BASE_WIDTH);
+        float scale = qMin(scaleX, scaleY);
 
-    ballsRotation[ballIndex] -= ball.getV().getX()/100;
-    //Painter.save();
-    Painter.translate(ball.getP().getX() + r, ball.getP().getY() + r);
-    Painter.rotate(ballsRotation[ballIndex]);
-    Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
+        Painter.translate(width() / 2.0, height() / 2.0);
+
+        Painter.scale(scale, scale);
+
+        QPixmap pixmap("../assets/placeholder.png");
+
+        //ballsRotation[ballIndex] -= ball.getV().getX()/100;
+        float temp_merge_r = 50;
+        float r = temp_merge_r;
+        Painter.translate(constraints->getFruit(i).getP().getX() + r, constraints->getFruit(i).getP().getY() + r);
+        //Painter.rotate(ballsRotation[ballIndex]);
+        Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
     //Painter.restore();
     //Painter.fillPath(FillPath, QColor(ballIndex*50 % 255,100,0));
+        Painter.fillPath(FillPath, QColor(i*50 % 255,100,0));
+
+        //if (constraints->getFruit(i).id == 1) {
+
+            Painter.setPen(QPen(Qt::black, 2));
+            Painter.drawLine(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY(), constraints->getFruit(i).getP().getX() + 10*constraints->getFruit(i).getV().getX(), constraints->getFruit(i).getP().getY() + 10*constraints->getFruit(i).getV().getY());
+        //}
 
 
-    ball.moveP(ball.getV());
+    }
 }
 
 
@@ -137,9 +138,7 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
 
-    for (int i = 0; i  < nb_balls; i++) {
-        moveBall(balls[i],i);
-    }
+    moveBall();
 }
 
 

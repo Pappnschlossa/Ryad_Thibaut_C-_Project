@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         mainwindow.ui
         Vector.cpp
         Vector.h
+        ConstraintsManager.cpp
+        ConstraintsManager.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
