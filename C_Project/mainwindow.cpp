@@ -58,7 +58,7 @@ void MainWindow :: moveBall(QPainter &Painter){
     constraints->runSimulation(maxHeight,maxWidth);
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
-        QPixmap pixmap("../assets/2.png");
+        QPixmap pixmap("../assets/2.png"); // Il y a tous les multiples de 2 jusqu'à 2048. (4.png, 8.png, ..., 2048.png)
 
         float r = constraints->getFruit(i).getRadius();
         Painter.save();
