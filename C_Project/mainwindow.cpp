@@ -60,11 +60,9 @@ void MainWindow :: moveBall(QPainter &Painter){
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QPixmap pixmap("../assets/2.png");
 
-        //ballsRotation[ballIndex] -= ball.getV().getX()/100;
         float r = constraints->getFruit(i).getRadius();
         Painter.save();
         Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
-        //Painter.rotate(ballsRotation[ballIndex]);
         Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
         Painter.setPen(QPen(Qt::black, 5));

@@ -67,8 +67,6 @@ private:
         constraints  =  new ConstraintsManager(*this,nb_balls);
     }
 
-    //float ballsRotation[100];
-
     int nb_balls = 0 ;
     ConstraintsManager* constraints ;
     int i = 0 ;
