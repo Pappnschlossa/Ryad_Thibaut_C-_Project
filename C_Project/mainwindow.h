@@ -29,6 +29,8 @@ public slots:
 
     void revFall(QPointF pos);
 
+    void setupWorldTransform(QPainter &painter);
+
     void paintEvent(QPaintEvent *event);
 
     bool isTouching(Fruit ball, Fruit ball2){
@@ -75,6 +77,10 @@ private:
     int BASE_WIDTH  = 800;
     int BASE_HEIGHT = 600;
     QRect bucketRect;
+
+    QTransform worldToScreen;
+    QTransform screenToWorld;
+
     void mousePressEvent(QMouseEvent *event) override;
 
 

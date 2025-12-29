@@ -67,6 +67,7 @@ void MainWindow :: moveBall(QPainter &Painter){
         //std:: cout << "ball i  is at  : " << constraints->constraints->getFruit(i).getP() << "\n" ;
         OuterPath.addEllipse(QPointF(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY()),
                              constraints->getFruit(i).getRadius(), constraints->getFruit(i).getRadius());
+        std::cout<<constraints->getFruit(i).getRadius()<<std::endl;
         QPainterPath FillPath = OuterPath;
 
         QPixmap pixmap("../assets/placeholder.png");
@@ -90,11 +91,8 @@ void MainWindow :: moveBall(QPainter &Painter){
     }
 }
 
-
-void MainWindow :: paintEvent(QPaintEvent *event)
+void MainWindow :: setupWorldTransform(QPainter &painter)
 {
-    QPainter painter(this);
-
     // Center the "world"
     float scale = std::min(
         width()/float(BASE_WIDTH),
@@ -103,6 +101,16 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 
     painter.translate(width() / 2.0, height() / 2.0);
     painter.scale(scale, scale);
+};
+
+void MainWindow :: paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+
+    setupWorldTransform(painter);
+
+    worldToScreen = painter.transform();
+    screenToWorld = worldToScreen.inverted();
 
     // Draw in "world" coordinates
     QPen pen(Qt::black);
