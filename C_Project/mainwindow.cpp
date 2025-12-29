@@ -51,7 +51,7 @@ void MainWindow::revFall(QPointF pos) {
 
 
 void MainWindow :: moveBall(QPainter &Painter){
-    float maxHeight = bucketRect.height()-height()/2 + 50 ; // 60 correspond à r (si on lance une balle)
+    float maxHeight = bucketRect.height()-height()/2;
     float maxWidth = bucketRect.width();
     constraints->runSimulation(maxHeight,maxWidth);
 
@@ -62,9 +62,9 @@ void MainWindow :: moveBall(QPainter &Painter){
         float temp_merge_r = 50;
         float r = temp_merge_r;
         Painter.save();
-        Painter.translate(constraints->getFruit(i).getP().getX() + r, constraints->getFruit(i).getP().getY() + r);
+        Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
         //Painter.rotate(ballsRotation[ballIndex]);
-        Painter.drawPixmap(-r,  -r, 2*r, 2*r, pixmap);
+        Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
         Painter.setPen(QPen(Qt::black, 5));
         Painter.drawLine(0, 0, 10 * constraints->getFruit(i).getV().getX(),  10 * constraints->getFruit(i).getV().getY());
