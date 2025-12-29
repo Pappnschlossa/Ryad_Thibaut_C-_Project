@@ -50,7 +50,7 @@ void MainWindow::revFall(QPointF pos) {
     update();
 }
 
-void MainWindow :: moveBall(Fruit& ball,int ballIndex){
+void MainWindow :: moveBall(Fruit& ball, int ballIndex){
     // QScreen *screen = QGuiApplication::primaryScreen();
     // QRect  screenGeometry = screen->geometry();
     float maxHeight = bucketRect.height()-height()/2 + 60 ; // 60 correspond à r (si on lance une balle)
@@ -62,7 +62,7 @@ void MainWindow :: moveBall(Fruit& ball,int ballIndex){
     if (ball.getV().getY() > 0 && ball.getP().getY() + r  >  maxHeight) {
         printf("touched 1\n");
         //ball.bounce(Vector(0,-1));
-        ball.nonElasticBounce(Vector( ball.getP().getX() ,maxHeight -  r ));
+        ball.nonElasticBounce(Vector(ball.getP().getX() ,maxHeight -  r ));
         ball.getP().setY(maxHeight - r);
     }else {
         ball.accelerate();
@@ -118,16 +118,19 @@ void MainWindow :: moveBall(Fruit& ball,int ballIndex){
 void MainWindow :: paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    float scaleX = width()/float(BASE_WIDTH);
-    float scaleY = height()/float(BASE_WIDTH);
-    float scale = qMin(scaleX, scaleY);
+
+    // Center the "world"
+    float scale = std::min(
+        width()/float(BASE_WIDTH),
+        height()/float(BASE_WIDTH)
+        );
 
     painter.translate(width() / 2.0, height() / 2.0);
-
     painter.scale(scale, scale);
 
+    // Draw in "world" coordinates
     QPen pen(Qt::black);
-    pen.setWidth(6);
+    pen.setWidth(15);
     painter.setPen(pen);
 
     painter.drawLine(bucketRect.topLeft(), bucketRect.bottomLeft());
