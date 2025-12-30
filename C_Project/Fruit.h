@@ -131,7 +131,7 @@ public:
 
 
 private:
-    float g = 50;
+    float g = 30;
 
     float mass = 1;
     Vector accel = Vector(0,g);

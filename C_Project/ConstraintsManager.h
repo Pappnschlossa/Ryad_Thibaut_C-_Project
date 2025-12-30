@@ -16,7 +16,7 @@ public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
   : nbFruits(nbF) {
   dt = 0.1;
-  _fruits = new std :: vector<Fruit> ;
+  _fruits = new Fruit[100] ;
 
  }
 
@@ -25,12 +25,12 @@ public:
 
   Fruit& getFruit(int index) {
    if (index < nbFruits) {
-    return (*_fruits)[index];
+    return _fruits[index];
    }
   }
 
   void addFruit(const Fruit& fruit) {
-     _fruits->push_back(fruit);
+     _fruits[nbFruits] = fruit;
    nbFruits += 1 ;
   }
 
@@ -44,36 +44,36 @@ public:
 
    float C = 0 ;
    for (int i = 0 ; i < nbFruits; ++i){
-    (*_fruits)[i].getAccel().setY((*_fruits)[i].getG()) ;
-    bool check = collidePlan((*_fruits)[i],Vector(0,0), Vector(1,0),true ) ;
+    _fruits[i].getAccel().setY(_fruits[i].getG()) ;
+    bool check = collidePlan(_fruits[i],Vector(0,0), Vector(1,0),true ) ;
     //checks the collision and handles it
      if( !(check)
-      && !collidePlan((*_fruits)[i],Vector(maxWidth,0), Vector(-1,0) , true)
-      && !collidePlan((*_fruits)[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
-      (*_fruits)[i].accelerate(dt);
+      && !collidePlan(_fruits[i],Vector(maxWidth,0), Vector(-1,0) , true)
+      && !collidePlan(_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
+      _fruits[i].accelerate(dt);
 
-      (*_fruits)[i].getV() =       (*_fruits)[i].getV()*frot ;
-      (*_fruits)[i].moveP((*_fruits)[i].getV(),dt);
+      _fruits[i].getV() =       _fruits[i].getV()*frot ;
+      _fruits[i].moveP(_fruits[i].getV(),dt);
 
       for (int j = 0; j < nbFruits ; j++) {
        if (i != j) {
-        C = (*_fruits)[i].colliding((*_fruits)[j],dt) ;
+        C = _fruits[i].colliding(_fruits[j],dt) ;
         if (C < 0) {
-         (*_fruits)[i].collideWith((*_fruits)[j],C,dt);
+         _fruits[i].collideWith(_fruits[j],C,dt);
 
-         if( !collidePlan((*_fruits)[j],Vector(0,0), Vector(1,0),true )
-          && !collidePlan((*_fruits)[j],Vector(maxWidth,0), Vector(-1,0) , true)
-          && !collidePlan((*_fruits)[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
-               (*_fruits)[j].collideWith((*_fruits)[i],C,dt) ;
+         if( !collidePlan(_fruits[j],Vector(0,0), Vector(1,0),true )
+          && !collidePlan(_fruits[j],Vector(maxWidth,0), Vector(-1,0) , true)
+          && !collidePlan(_fruits[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
+               _fruits[j].collideWith(_fruits[i],C,dt) ;
 
-               float v_scal = sqrt((*_fruits)[j].getV().getSquaredLength()) ;
+               float v_scal = sqrt(_fruits[j].getV().getSquaredLength()) ;
                if (v_scal > dt) {
-                (*_fruits)[j].getV()= (*_fruits)[j].getV()* ((std :: min(v_scal,(*_fruits)[j].getRadius()/10))/v_scal) ;
+                _fruits[j].getV()= _fruits[j].getV()* ((std :: min(v_scal,_fruits[j].getRadius()/10))/v_scal) ;
                }
          }
-         float v_scal = sqrt((*_fruits)[i].getV().getSquaredLength()) ;
+         float v_scal = sqrt(_fruits[i].getV().getSquaredLength()) ;
          if (v_scal > dt) {
-          (*_fruits)[i].getV()= (*_fruits)[i].getV()* ((std :: min(v_scal,(*_fruits)[i].getRadius()/10))/v_scal) ;
+          _fruits[i].getV()= _fruits[i].getV()* ((std :: min(v_scal,_fruits[i].getRadius()/10))/v_scal) ;
          }
 
 
@@ -97,7 +97,7 @@ public:
   }
 
 private:
- std :: vector<Fruit>*  _fruits ;
+  Fruit*  _fruits ;
   int nbFruits = 0;
   float dt ;
 
