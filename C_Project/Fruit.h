@@ -4,14 +4,13 @@
 #include <math.h>
 
 #include "Vector.h"
-
+#include <queue>
 class Fruit
 {
 public:
     Fruit( const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
     v(velocity) , accel(accel) , p(position),rad(abs(radius))
     {
-
     }
     Fruit(Vector position) : p(position)
     {
@@ -28,6 +27,7 @@ public:
     };
 
     ~Fruit() {
+        delete prevP ;
     }
 
 
@@ -42,6 +42,9 @@ public:
 
     void moveP(const Vector& args,float dt){
         p = p + args * dt ;
+        float prevX = p.getX() ;
+        prevP->push(prevX);
+
     }
 
     const Vector& getAccel() const {
@@ -78,7 +81,7 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(0.5/dt) ;
+        v = (p_exp - p)*(0.5/dt) + accel*dt ;
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
@@ -127,7 +130,7 @@ private:
     Vector p =  Vector(10,10);;
     float rad = 10;
     bool allowAccel = true ;
-
+    std::queue<float>* prevP = new std::queue<float> ;
 };
 
 #endif // FRUIT_H

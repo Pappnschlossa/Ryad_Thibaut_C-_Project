@@ -14,7 +14,9 @@ class Vector {
 public:
     Vector(float x, float y) : _x(x) , _y(y) {}
     Vector(Vector& v) : _x(v.getX()), _y(v.getY()) {}
+    Vector(const Vector& v) : _x(v.getX()), _y(v.getY()) {}
 
+    Vector(){}
     ~Vector(){}
 
 
