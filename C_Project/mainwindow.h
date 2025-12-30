@@ -6,8 +6,6 @@
 #include <QMainWindow>
 #include <math.h>
 #include <QPainter>
-
-
 #include "ConstraintsManager.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +27,9 @@ public:
 public slots:
     void setText(QString s);
 
-    void revFall();
+    void revFall(QPointF pos);
+
+    void setupWorldTransform(QPainter &painter);
 
     void paintEvent(QPaintEvent *event);
 
@@ -42,7 +42,7 @@ public slots:
     }
 
 
-    void moveBall();
+    void moveBall(QPainter &Painter);
 
     void drawLine() {
         QPainter painter(this);
@@ -67,14 +67,22 @@ private:
         constraints  =  new ConstraintsManager(*this,nb_balls);
     }
 
-
     int nb_balls = 0 ;
     ConstraintsManager* constraints ;
     int i = 0 ;
     //Fruit ball2;
 
+    int BASE_WIDTH  = 800;
+    int BASE_HEIGHT = 600;
+    QRect bucketRect;
 
+    QTransform worldToScreen;
+    QTransform screenToWorld;
 
+    float maxHeightOffset;
+    float widthOffset;
+
+    void mousePressEvent(QMouseEvent *event) override;
 
 
 };

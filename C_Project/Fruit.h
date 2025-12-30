@@ -4,14 +4,13 @@
 #include <math.h>
 
 #include "Vector.h"
-
+#include <queue>
 class Fruit
 {
 public:
     Fruit( const float radius,Vector& velocity , Vector& accel  , Vector& position ) :
     v(velocity) , accel(accel) , p(position),rad(abs(radius))
     {
-
     }
     Fruit(Vector position) : p(position)
     {
@@ -28,6 +27,7 @@ public:
     };
 
     ~Fruit() {
+        delete prevP ;
     }
 
 
@@ -42,6 +42,9 @@ public:
 
     void moveP(const Vector& args,float dt){
         p = p + args * dt ;
+        //float prevX = p.getX() ;
+        //prevP->push(prevX);
+
     }
 
     const Vector& getAccel() const {
@@ -77,8 +80,17 @@ public:
 
         v = v - n * 2 * (v*n) ;
     }
-    void nonElasticBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(0.5/dt) ;
+    void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
+        v = (p_exp - p)*(1/dt) ;
+        Vector d = ball.getP() - p ;
+        d = Vector(-d.getY(), d.getX());
+        float n = sqrt(d.getSquaredLength()) ;
+        d = d*(1/n) ;
+        Vector ortV = d*(v * d) ;
+        v = v + ortV + accel*dt;
+
+
+
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
@@ -104,7 +116,7 @@ public:
         float n = sqrt(d.getSquaredLength()) ;
         float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
         Vector delta = d * (-sig/n) ;
-        nonElasticBounce(p + delta,dt);
+        nonElasticBounce(p + delta,dt,ball);
         p.setCoords(newP + delta ) ;
         if (C < 1) {
             ball.getAccel().setY(0) ;
@@ -119,7 +131,7 @@ public:
 
 
 private:
-    float g = 10;
+    float g = 30;
 
     float mass = 1;
     Vector accel = Vector(0,g);
@@ -127,7 +139,7 @@ private:
     Vector p =  Vector(10,10);;
     float rad = 10;
     bool allowAccel = true ;
-
+    std::queue<float>* prevP = new std::queue<float> ;
 };
 
 #endif // FRUIT_H
