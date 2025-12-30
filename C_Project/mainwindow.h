@@ -5,6 +5,8 @@
 #include "Fruit.h"
 #include <QMainWindow>
 #include <math.h>
+#include <QPainter>
+
 
 #include "ConstraintsManager.h"
 
@@ -42,7 +44,11 @@ public slots:
 
     void moveBall();
 
-
+    void drawLine() {
+        QPainter painter(this);
+        painter.setPen(QPen(Qt::black, 12, Qt::DashDotLine, Qt::RoundCap));
+        painter.drawLine(0, 0, 200, 200);
+    }
 
 
 

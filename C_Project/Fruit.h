@@ -2,6 +2,7 @@
 #define FRUIT_H
 
 #include <math.h>
+
 #include "Vector.h"
 
 class Fruit
@@ -25,6 +26,9 @@ public:
     Fruit() {
 
     };
+
+    ~Fruit() {
+    }
 
 
 
@@ -74,9 +78,12 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(1/dt) ;
+        v = (p_exp - p)*(0.5/dt) ;
     }
 
+    void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
+        v = (p_exp - p)*(1/dt) ;
+    }
 
 
     bool collides(Fruit& ball) {
@@ -85,34 +92,41 @@ public:
         }
         return false;
     }
-    float colliding(Fruit& ball) {
-        return   sqrt((ball.getP() - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
+    float colliding(Fruit& ball,float dt) {
+        return   sqrt((ball.getP() + v*dt - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
     }
+
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        Vector d =  p - ball.getP() ;
+        Vector newP = p + v*dt ;
+        Vector d =   newP - ball.getP() ;
         float n = sqrt(d.getSquaredLength()) ;
-        float sig = ((1/mass)/(1/mass + 1/ball.getMass()))*C ;
+        float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
         Vector delta = d * (-sig/n) ;
         nonElasticBounce(p + delta,dt);
-        //p.setCoords(p + delta ) ;
-        animate(dt);
+        p.setCoords(newP + delta ) ;
+        if (C < 1) {
+            ball.getAccel().setY(0) ;
+        }
     }
 
+    void setAllowAccel(const bool b) {
+        allowAccel = b ;
+    }
 
-
+    int id = 0 ;
 
 
 private:
-    float g = 2000;
+    float g = 10;
 
     float mass = 1;
     Vector accel = Vector(0,g);
     Vector v = Vector(0,0);
     Vector p =  Vector(10,10);;
     float rad = 10;
-
+    bool allowAccel = true ;
 
 };
 
