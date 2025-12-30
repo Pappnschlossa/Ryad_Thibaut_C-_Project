@@ -8,6 +8,7 @@
 #include "Fruit.h"
 #include <QMainWindow>
 #include <QPainter>
+#include <vector>
 
 
  class ConstraintsManager {
@@ -38,7 +39,7 @@ public:
   }
 
 
-  void runSimulation(float maxHeight, float maxWidth) {
+  void runSimulation(float maxHeight, float maxWidth,float frot) {
    int col= 0 ;
 
    float C = 0 ;
@@ -50,6 +51,8 @@ public:
       && !collidePlan(_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true)
       && !collidePlan(_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
       _fruits[i].accelerate(dt);
+
+      _fruits[i].getV() =       _fruits[i].getV()*frot ;
       _fruits[i].moveP(_fruits[i].getV(),dt);
 
       for (int j = 0; j < nbFruits ; j++) {
@@ -62,6 +65,15 @@ public:
           && !collidePlan(_fruits[j],Vector(maxWidth/2,0), Vector(-1,0) , true)
           && !collidePlan(_fruits[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
                _fruits[j].collideWith(_fruits[i],C,dt) ;
+
+               float v_scal = sqrt(_fruits[j].getV().getSquaredLength()) ;
+               if (v_scal > dt) {
+                _fruits[j].getV()= _fruits[j].getV()* ((std :: min(v_scal,_fruits[j].getRadius()/10))/v_scal) ;
+               }
+         }
+         float v_scal = sqrt(_fruits[i].getV().getSquaredLength()) ;
+         if (v_scal > dt) {
+          _fruits[i].getV()= _fruits[i].getV()* ((std :: min(v_scal,_fruits[i].getRadius()/10))/v_scal) ;
          }
 
 
@@ -85,7 +97,7 @@ public:
   }
 
 private:
- Fruit* _fruits ;
+  Fruit*  _fruits ;
   int nbFruits = 0;
   float dt ;
 

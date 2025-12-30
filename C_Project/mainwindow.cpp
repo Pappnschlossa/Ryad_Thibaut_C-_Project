@@ -59,7 +59,7 @@ void MainWindow::revFall(QPointF pos) {
 void MainWindow :: moveBall(QPainter &Painter){
     float maxHeight = bucketRect.height()-maxHeightOffset;
     float maxWidth = bucketRect.width();
-    constraints->runSimulation(maxHeight,maxWidth);
+    constraints->runSimulation(maxHeight,maxWidth, 0.95);
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QPixmap pixmap("../assets/2.png"); // Il y a tous les multiples de 2 jusqu'à 2048. (4.png, 8.png, ..., 2048.png)
