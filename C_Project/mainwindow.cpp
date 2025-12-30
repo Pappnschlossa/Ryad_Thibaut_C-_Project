@@ -34,8 +34,12 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos) {
-    Fruit fruit = Fruit(50,100) ;
-    fruit.getP().setCoords(pos.x(),-maxHeightOffset);
+    float r = 50;
+    Fruit fruit = Fruit(r,100);
+    float startPosX = pos.x();
+    if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
+    if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
+    fruit.getP().setCoords(startPosX,-maxHeightOffset);
     fruit.getV().setCoords(1,0);
     fruit.id = constraints->getNbFruits() ;
     constraints->addFruit(fruit);
