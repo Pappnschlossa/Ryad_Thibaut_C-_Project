@@ -65,7 +65,7 @@ void MainWindow :: moveBall(){
     float maxHeight = 3*screenGeometry.height()/4;
     float maxWidth = screenGeometry.width();
    // std:: cout << "ball0 was : " << constraints->constraints->getFruit(0).getP() << "\n" ;
-    constraints->runSimulation(maxHeight,maxWidth);
+    constraints->runSimulation(maxHeight,maxWidth, 0.95);
     //std:: cout << "ball0 is : " << constraints->constraints->getFruit(0).getP() << "\n" ;
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {

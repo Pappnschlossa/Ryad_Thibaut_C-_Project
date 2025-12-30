@@ -42,8 +42,8 @@ public:
 
     void moveP(const Vector& args,float dt){
         p = p + args * dt ;
-        float prevX = p.getX() ;
-        prevP->push(prevX);
+        //float prevX = p.getX() ;
+        //prevP->push(prevX);
 
     }
 
@@ -80,8 +80,17 @@ public:
 
         v = v - n * 2 * (v*n) ;
     }
-    void nonElasticBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(0.5/dt) + accel*dt ;
+    void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
+        v = (p_exp - p)*(1/dt) ;
+        Vector d = ball.getP() - p ;
+        d = Vector(-d.getY(), d.getX());
+        float n = sqrt(d.getSquaredLength()) ;
+        d = d*(1/n) ;
+        Vector ortV = d*(v * d) ;
+        v = v + ortV + accel*dt;
+
+
+
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
@@ -107,7 +116,7 @@ public:
         float n = sqrt(d.getSquaredLength()) ;
         float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
         Vector delta = d * (-sig/n) ;
-        nonElasticBounce(p + delta,dt);
+        nonElasticBounce(p + delta,dt,ball);
         p.setCoords(newP + delta ) ;
         if (C < 1) {
             ball.getAccel().setY(0) ;
@@ -122,7 +131,7 @@ public:
 
 
 private:
-    float g = 10;
+    float g = 50;
 
     float mass = 1;
     Vector accel = Vector(0,g);
