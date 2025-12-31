@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         Vector.h
         ConstraintsManager.cpp
         ConstraintsManager.h
+        Array.cpp
+        Array.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

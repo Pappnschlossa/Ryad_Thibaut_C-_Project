@@ -27,7 +27,7 @@ public:
     };
 
     ~Fruit() {
-        delete prevP ;
+
     }
 
 
@@ -41,10 +41,8 @@ public:
     }
 
     void moveP(const Vector& args,float dt){
+        prevP = p ;
         p = p + args * dt ;
-        //float prevX = p.getX() ;
-        //prevP->push(prevX);
-
     }
 
     const Vector& getAccel() const {
@@ -89,8 +87,6 @@ public:
         Vector ortV = d*(v * d) ;
         v = v + ortV + accel*dt;
 
-
-
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
@@ -116,11 +112,13 @@ public:
         float n = sqrt(d.getSquaredLength()) ;
         float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
         Vector delta = d * (-sig/n) ;
-        nonElasticBounce(p + delta,dt,ball);
-        p.setCoords(newP + delta ) ;
-        if (C < 1) {
-            ball.getAccel().setY(0) ;
-        }
+        //float dist = (p + delta - prevP).getSquaredLength() ;
+            //if (dist> dt*dt*rad/10) {
+                nonElasticBounce(p + delta,dt,ball);
+                p.setCoords(newP + delta ) ;
+            //}
+
+        //accel.setY(0);
     }
 
     void setAllowAccel(const bool b) {
@@ -139,7 +137,7 @@ private:
     Vector p =  Vector(10,10);;
     float rad = 10;
     bool allowAccel = true ;
-    std::queue<float>* prevP = new std::queue<float> ;
+    Vector prevP = p ;
 };
 
 #endif // FRUIT_H
