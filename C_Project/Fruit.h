@@ -83,7 +83,7 @@ public:
         Vector d = ball.getP() - p ;
         d = Vector(-d.getY(), d.getX());
         float n = sqrt(d.getSquaredLength()) ;
-        d = d*(1/n) ;
+        d = d*(1/(n)) ;
         Vector ortV = d*(v * d) ;
         v = v + ortV + accel*dt;
 
@@ -112,10 +112,12 @@ public:
         float n = sqrt(d.getSquaredLength()) ;
         float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
         Vector delta = d * (-sig/n) ;
-        //float dist = (p + delta - prevP).getSquaredLength() ;
-            //if (dist> dt*dt*rad/10) {
+        float dist = (p + delta - prevP).getSquaredLength() - (p - prevP).getSquaredLength() ;
+            //if (dist > 0) {
                 nonElasticBounce(p + delta,dt,ball);
                 p.setCoords(newP + delta ) ;
+            //}else {
+              //  v = v - v ;
             //}
 
         //accel.setY(0);
@@ -129,7 +131,7 @@ public:
 
 
 private:
-    float g = 30;
+    float g = 100;
 
     float mass = 1;
     Vector accel = Vector(0,g);

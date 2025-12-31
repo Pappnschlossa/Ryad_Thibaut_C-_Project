@@ -17,7 +17,7 @@
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
   : nbFruits(nbF) {
-  dt = 0.1;
+  dt = 0.01;
  }
 
   ConstraintsManager();
@@ -52,7 +52,7 @@ public:
       && !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
       _fruits[i]->accelerate(dt);
 
-      _fruits[i]->getV() =       _fruits[i]->getV()*frot ;
+      //_fruits[i]->getV() =       _fruits[i]->getV()*frot ;
 
       //_fruits.shuffle(1);
 
@@ -65,16 +65,16 @@ public:
          if( !collidePlan(*_fruits[j],Vector(-maxWidth/2,0), Vector(1,0),true )
           && !collidePlan(*_fruits[j],Vector(maxWidth/2,0), Vector(-1,0) , true)
           && !collidePlan(*_fruits[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
-               _fruits[j]->collideWith(*_fruits[i],C,dt) ;
+               /**_fruits[j]->collideWith(*_fruits[i],C,dt) ;
 
                float v_scal = sqrt(_fruits[j]->getV().getSquaredLength()) ;
                if (v_scal > dt) {
-                _fruits[j]->getV()= _fruits[j]->getV()* ((std :: min(v_scal,_fruits[j]->getRadius()/10))/v_scal) ;
-               }
+                _fruits[j]->getV()= _fruits[j]->getV()* ((std :: min(v_scal,_fruits[j]->getRadius()/2))/(v_scal)) ;
+               }*/
          }
          float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
          if (v_scal > dt) {
-          _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()/10))/v_scal) ;
+          _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()/2))/v_scal) ;
          }
 
 
