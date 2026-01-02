@@ -62,19 +62,10 @@ public:
         if (C < 0) {
          _fruits[i]->collideWith(*_fruits[j],C,dt);
 
-         if( !collidePlan(*_fruits[j],Vector(-maxWidth/2,0), Vector(1,0),true )
-          && !collidePlan(*_fruits[j],Vector(maxWidth/2,0), Vector(-1,0) , true)
-          && !collidePlan(*_fruits[j],Vector(0,maxHeight), Vector(0,-1) , true)) {
-               /**_fruits[j]->collideWith(*_fruits[i],C,dt) ;
 
-               float v_scal = sqrt(_fruits[j]->getV().getSquaredLength()) ;
-               if (v_scal > dt) {
-                _fruits[j]->getV()= _fruits[j]->getV()* ((std :: min(v_scal,_fruits[j]->getRadius()/2))/(v_scal)) ;
-               }*/
-         }
          float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
          if (v_scal > dt) {
-          _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()/2))/v_scal) ;
+          _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()))/v_scal) ;
          }
 
 

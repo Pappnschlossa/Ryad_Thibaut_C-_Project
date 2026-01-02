@@ -33,7 +33,7 @@ public:
 
 
     void accelerate(const float& dt){
-        v = v + accel*dt ;
+        v = v + accel;
     }
 
     void animate(const float& dt) {
@@ -79,13 +79,13 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
-        v = (p_exp - p)*(1/dt) ;
+        v = (p_exp - p)*(1/dt) + accel;
         Vector d = ball.getP() - p ;
         d = Vector(-d.getY(), d.getX());
         float n = sqrt(d.getSquaredLength()) ;
         d = d*(1/(n)) ;
-        Vector ortV = d*(v * d) ;
-        v = v + ortV + accel*dt;
+        Vector ortV = d* ( (v * d) * g )  ;
+        //v = v + ortV;
 
     }
 
@@ -94,29 +94,30 @@ public:
     }
 
 
-    bool collides(Fruit& ball) {
+    /**bool collides(Fruit& ball) {
         if ( sqrt((p - ball.getP()).getSquaredLength() ) < rad + ball.getRadius() ) {
             return true;
         }
         return false;
-    }
+    }*/
     float colliding(Fruit& ball,float dt) {
-        return   sqrt((ball.getP() + v*dt - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
+        return   sqrt((ball.getP() - v*dt - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
     }
 
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        Vector newP = p + v*dt ;
-        Vector d =   newP - ball.getP() ;
-        float n = sqrt(d.getSquaredLength()) ;
-        float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
-        Vector delta = d * (-sig/n) ;
-        float dist = (p + delta - prevP).getSquaredLength() - (p - prevP).getSquaredLength() ;
+        if ( (ball.getP().getY() > p.getY()) && (v.getY() > 0)) {
+            Vector newP = p + v*dt ;
+            Vector d =   newP - ball.getP() ;
+            float n = sqrt(d.getSquaredLength()) ;
+            float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
+            Vector delta = d * (-sig/n) ;
+            float dist = (p + delta - prevP).getSquaredLength() - (p - prevP).getSquaredLength() ;
             //if (dist > 0) {
-                nonElasticBounce(p + delta,dt,ball);
-                p.setCoords(newP + delta ) ;
-            //}else {
+            nonElasticBounce(p + delta,dt,ball);
+            p.setCoords(newP + delta ) ;
+        }            //}else {
               //  v = v - v ;
             //}
 
@@ -131,7 +132,7 @@ public:
 
 
 private:
-    float g = 100;
+    float g = 10;
 
     float mass = 1;
     Vector accel = Vector(0,g);
