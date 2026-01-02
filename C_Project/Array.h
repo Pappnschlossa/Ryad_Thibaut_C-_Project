@@ -46,10 +46,14 @@ public:
         }
     }
 
+    int getFill() const {
+        return fill ;
+    }
+
     void print() {
         std :: cout << "[ " ;
         for (int i = 0 ; i < fill ; i++) {
-            std :: cout << *array[i] << " " ;
+            std :: cout << array[i]->print() << " " ;
         }
         std :: cout << "] \n" ;
     }
@@ -92,6 +96,7 @@ private:
     int size ;
 
     void removeIndex(int ind) {
+
         if (ind < fill) {
             for (int i = ind; i < fill ; i++) {
                 array[i] = array[i + 1] ;

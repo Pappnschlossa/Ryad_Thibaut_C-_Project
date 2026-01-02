@@ -16,7 +16,7 @@
  class ConstraintsManager {
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
-  : nbFruits(nbF) {
+ {
   dt = 0.01;
  }
 
@@ -24,18 +24,17 @@ public:
 
 
   Fruit& getFruit(int index) {
-   if (index < nbFruits) {
+   if (index < _fruits.getFill()) {
     return *_fruits[index];
    }
   }
 
   void addFruit(Fruit& fruit) {
    _fruits.add( fruit );
-   nbFruits += 1 ;
   }
 
   const int getNbFruits() const {
-   return nbFruits;
+   return _fruits.getFill();
   }
 
 
@@ -43,42 +42,57 @@ public:
    int col= 0 ;
 
    float C = 0 ;
-   for (int i = 0 ; i < nbFruits; ++i){
-    _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
+   for (int i = 0 ; i < _fruits.getFill(); ++i){
+    if (i < _fruits.getFill()) {
+     _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
 
-    //checks the collision and handles it
+     //checks the collision and handles it
      if( !collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true )
       && !collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true)
       && !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
       _fruits[i]->accelerate(dt);
 
+      bool validMove = true ;
+
       //_fruits[i]->getV() =       _fruits[i]->getV()*frot ;
 
       //_fruits.shuffle(1);
 
-      for (int j = 0; j < nbFruits ; j++) {
-       if (i != j) {
+      for (int j = 0; j < _fruits.getFill() ; j++) {
+       if (i != j && j < _fruits.getFill() ) {
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
-         _fruits[i]->collideWith(*_fruits[j],C,dt);
+
+         if (_fruits[i]->getRadius() == _fruits[j]->getRadius()) {
+          _fruits.remove(*_fruits[std :: max(i,j)]) ;
+          _fruits.print() ;
+          //std :: string  message =  std::min(i,j) +  " killed " +  std :: max(i,j)  ;
+          validMove = false ;
+         }else {
+          _fruits[i]->collideWith(*_fruits[j],C,dt);
+
+          float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
+          if (v_scal > dt) {
+           _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()))/v_scal) ;
+          }
 
 
-         float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
-         if (v_scal > dt) {
-          _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()))/v_scal) ;
+
+          col = 255 ;
          }
-
-
-
-         col = 255 ;
         }
        }
 
-        }
-      _fruits[i]->moveP(_fruits[i]->getV(),dt);
       }
+      if (validMove) {
+       _fruits[i]->moveP(_fruits[i]->getV(),dt);
+      }
+      }
+    }
+
 
    }
+
 
 
   }
@@ -92,7 +106,7 @@ public:
 
 private:
   Array<Fruit>  _fruits =  Array<Fruit>(100);
-  int nbFruits = 0;
+
   float dt ;
 
 

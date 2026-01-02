@@ -27,7 +27,7 @@ public:
     };
 
     ~Fruit() {
-
+        std :: cout << " Fruit of id " << id << " at adress " << " was destroyed " <<"\n" ;
     }
 
 
@@ -41,7 +41,7 @@ public:
     }
 
     void moveP(const Vector& args,float dt){
-        prevP = p ;
+        //prevP = p ;
         p = p + args * dt ;
     }
 
@@ -55,6 +55,9 @@ public:
         return p ;
     }
 
+    std :: string print() {
+        return  "Fruit of id "  +  std::to_string(id)  + " and radius " + std::to_string(rad) +  "\n" ;
+    }
     Vector& getAccel() {
         return accel ;
     }
@@ -107,14 +110,13 @@ public:
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        if ( (ball.getP().getY() > p.getY()) && (v.getY() > 0)) {
+        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= 0)) {
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;
             float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
             Vector delta = d * (-sig/n) ;
-            float dist = (p + delta - prevP).getSquaredLength() - (p - prevP).getSquaredLength() ;
-            //if (dist > 0) {
+
             nonElasticBounce(p + delta,dt,ball);
             p.setCoords(newP + delta ) ;
         }            //}else {
@@ -140,7 +142,7 @@ private:
     Vector p =  Vector(10,10);;
     float rad = 10;
     bool allowAccel = true ;
-    Vector prevP = p ;
+
 };
 
 #endif // FRUIT_H
