@@ -40,10 +40,10 @@ public:
 
   void runSimulation(float maxHeight, float maxWidth,float frot) {
    int col= 0 ;
-
+   Array<Fruit*> banList = Array<Fruit*>(_fruits.getFill()) ;
    float C = 0 ;
    for (int i = 0 ; i < _fruits.getFill(); ++i){
-    if (i < _fruits.getFill()) {
+    if (i < _fruits.getFill() && _fruits[i]->getValid() ) {
      _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
 
      //checks the collision and handles it
@@ -64,8 +64,13 @@ public:
         if (C < 0) {
 
          if (_fruits[i]->getRadius() == _fruits[j]->getRadius()) {
-          _fruits.remove(*_fruits[std :: max(i,j)]) ;
-          _fruits.print() ;
+          int max = std :: max(i,j) ;
+          int min = std :: min(i,j) ;
+          _fruits[max]->setValid(false);
+          banList.add(_fruits[max]) ;
+
+          _fruits[std :: min(i,j)]->setRadius(_fruits[min]->getRadius() + 10);
+
           //std :: string  message =  std::min(i,j) +  " killed " +  std :: max(i,j)  ;
           validMove = false ;
          }else {
@@ -92,8 +97,10 @@ public:
 
 
    }
-
-
+   int banSize = banList.getFill() ;
+   for (int i = 0 ; i < banSize ; i++) {
+      _fruits.remove(**banList[i]) ;
+   }
 
   }
 

@@ -70,6 +70,9 @@ public:
     const float getRadius(){
         return rad;
     }
+    void setRadius(float r) {
+        rad = r ;
+    }
 
     const float getG() const {
         return g;
@@ -82,7 +85,7 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
-        v = (p_exp - p)*(1/dt) + accel;
+        v = (p_exp - p)*(1/dt) + accel*(1/dt);
         Vector d = ball.getP() - p ;
         d = Vector(-d.getY(), d.getX());
         float n = sqrt(d.getSquaredLength()) ;
@@ -93,7 +96,7 @@ public:
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(1/dt) ;
+        v = (p_exp - p)*(0.1/dt) ;
     }
 
 
@@ -132,9 +135,18 @@ public:
 
     int id = 0 ;
 
+    void setValid(bool b) {
+        valid = b ;
+    }
+
+    bool getValid() const {
+        return valid ;
+    }
 
 private:
     float g = 10;
+
+    bool valid = true;
 
     float mass = 1;
     Vector accel = Vector(0,g);

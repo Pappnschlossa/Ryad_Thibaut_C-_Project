@@ -34,7 +34,7 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos) {
-    float r = 50;
+    float r = 25;
     Fruit fruit = Fruit(r,100);
     float startPosX = pos.x();
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
