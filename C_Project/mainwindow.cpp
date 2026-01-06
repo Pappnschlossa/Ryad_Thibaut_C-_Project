@@ -6,6 +6,7 @@
 #include <QScreen>
 
 #include <math.h>
+
 #include <QTimer>
 #include <QMouseEvent>
 
@@ -34,8 +35,9 @@ void MainWindow :: setText(QString s){
 }
 
 void MainWindow::revFall(QPointF pos) {
-    float r = 25;
-    Fruit fruit = Fruit(r,100);
+    int t = 1;
+    Fruit fruit = Fruit(t);
+    float r = fruit.getRadius();
     float startPosX = pos.x();
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
     if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
@@ -62,7 +64,11 @@ void MainWindow :: moveBall(QPainter &Painter){
     constraints->runSimulation(maxHeight,maxWidth, 0.95);
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
-        QPixmap pixmap("../assets/2.png"); // Il y a tous les multiples de 2 jusqu'à 2048. (4.png, 8.png, ..., 2048.png)
+        QString pathStart = "../assets/";
+        QString pathEnd = ".png";
+        int power = pow(2, constraints->getFruit(i).getFruitType());
+        QString path = pathStart + QString::number(power) + pathEnd;
+        QPixmap pixmap(path); // Il y a tous les multiples de 2 jusqu'à 2048. (4.png, 8.png, ..., 2048.png)
 
         float r = constraints->getFruit(i).getRadius();
         Painter.save();

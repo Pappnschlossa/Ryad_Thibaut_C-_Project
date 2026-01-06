@@ -16,8 +16,11 @@ public:
     {
 
     }
-    Fruit(float radius) :  rad(abs(radius))
+    Fruit(int t) :  type(1)
     {
+        for (int i = 1; i < t; i++) {
+            growFruit();
+        }
     }
     Fruit(float radius,float inMass) :  rad(abs(radius)), mass(abs(inMass))
     {
@@ -72,6 +75,14 @@ public:
     }
     void setRadius(float r) {
         rad = r ;
+    }
+    int getFruitType() {
+        return type;
+    }
+    void growFruit() {
+        type += 1;
+        rad = rad*1.2;
+        mass = mass*2;
     }
 
     const float getG() const {
@@ -148,11 +159,12 @@ private:
 
     bool valid = true;
 
-    float mass = 1;
+    float mass = 100;
     Vector accel = Vector(0,g);
     Vector v = Vector(0,0);
     Vector p =  Vector(10,10);;
-    float rad = 10;
+    float rad = 25;
+    int type = 1;
     bool allowAccel = true ;
 
 };

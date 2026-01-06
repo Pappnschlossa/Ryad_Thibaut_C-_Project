@@ -17,7 +17,7 @@
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
  {
-  dt = 0.005;
+  dt = 0.01;
  }
 
   ConstraintsManager();
@@ -57,7 +57,7 @@ public:
 
 
       for (int j = 0; j < _fruits.getFill() ; j++) {
-       if (i != j && j < _fruits.getFill() && _fruits[j]->getValid()) {
+       if (i != j && j < _fruits.getFill() && _fruits[j]->getValid() ) {
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
 
@@ -67,7 +67,7 @@ public:
           _fruits[max]->setValid(false);
           banList.add(_fruits[max]) ;
 
-          _fruits[std :: min(i,j)]->setRadius(_fruits[min]->getRadius() + 10);
+          _fruits[std :: min(i,j)]->growFruit();
 
           validMove = false ;
          }else {
