@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <math.h>
 #include <QPainter>
+#include <QElapsedTimer>
 #include "ConstraintsManager.h"
 
 QT_BEGIN_NAMESPACE
@@ -83,6 +84,7 @@ private:
     float widthOffset;
 
     int nextFruitType = 1;
+    QElapsedTimer clickTimer;
 
     void mousePressEvent(QMouseEvent *event) override;
 

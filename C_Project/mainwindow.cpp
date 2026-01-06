@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     createConstraintsManager();
     maxHeightOffset = height()/2;
     widthOffset = width()/2;
+    clickTimer.start();
 }
 
 MainWindow::~MainWindow()
@@ -51,7 +52,6 @@ void MainWindow::dropFruit(QPointF pos) {
     int nbFruits = round(constraints->getNbFruits());
     nextFruitType = rand()%std::min(nbFruits,16) / 4 + 1;
 
-    //std :: cout << constraints->constraints->getFruit(i).getV();
     if (constraints->getNbFruits() == 1){
         QTimer *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
@@ -125,6 +125,9 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        dropFruit(screenToWorld.map(event->pos()));
+        if (clickTimer.elapsed() >= 500) {
+            clickTimer.restart();
+            dropFruit(screenToWorld.map(event->pos()));
+        }
     }
 }
