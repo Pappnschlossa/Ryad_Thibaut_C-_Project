@@ -113,7 +113,7 @@ public:
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= -dt)) {
+        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= rad*(-dt))) {
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;

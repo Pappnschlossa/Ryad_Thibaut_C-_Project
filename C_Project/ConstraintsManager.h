@@ -17,7 +17,7 @@
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
  {
-  dt = 0.01;
+  dt = 0.005;
  }
 
   ConstraintsManager();
