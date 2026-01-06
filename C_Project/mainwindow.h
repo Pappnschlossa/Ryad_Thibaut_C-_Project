@@ -82,6 +82,8 @@ private:
     float maxHeightOffset;
     float widthOffset;
 
+    int nextFruitType = 1;
+
     void mousePressEvent(QMouseEvent *event) override;
 
 

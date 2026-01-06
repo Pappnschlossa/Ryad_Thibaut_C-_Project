@@ -37,8 +37,7 @@ void MainWindow :: setText(QString s){
 
 void MainWindow::dropFruit(QPointF pos) {
     srand(time(NULL));
-    int t = rand() % 3 + 1;
-    Fruit fruit = Fruit(t);
+    Fruit fruit = Fruit(nextFruitType);
     float r = fruit.getRadius();
     float startPosX = pos.x();
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
@@ -47,6 +46,10 @@ void MainWindow::dropFruit(QPointF pos) {
     fruit.getV().setCoords(1,0);
     fruit.id = constraints->getNbFruits() ;
     constraints->addFruit(fruit);
+
+    // Ici on détermine le type du prochain fruit (souvent petit au début de la partie)
+    int nbFruits = round(constraints->getNbFruits());
+    nextFruitType = rand()%std::min(nbFruits,16) / 4 + 1;
 
     //std :: cout << constraints->constraints->getFruit(i).getV();
     if (constraints->getNbFruits() == 1){
