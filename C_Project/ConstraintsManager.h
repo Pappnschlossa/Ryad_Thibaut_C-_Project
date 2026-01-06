@@ -59,7 +59,7 @@ public:
       //_fruits.shuffle(1);
 
       for (int j = 0; j < _fruits.getFill() ; j++) {
-       if (i != j && j < _fruits.getFill() ) {
+       if (i != j && j < _fruits.getFill() && _fruits[j]->getValid() ) {
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
 
@@ -69,7 +69,8 @@ public:
           _fruits[max]->setValid(false);
           banList.add(_fruits[max]) ;
 
-          _fruits[std :: min(i,j)]->setRadius(_fruits[min]->getRadius() + 10);
+          //_fruits[std :: min(i,j)]->setRadius(_fruits[min]->getRadius()*1.2);
+          _fruits[std :: min(i,j)]->growFruit();
 
           //std :: string  message =  std::min(i,j) +  " killed " +  std :: max(i,j)  ;
           validMove = false ;
