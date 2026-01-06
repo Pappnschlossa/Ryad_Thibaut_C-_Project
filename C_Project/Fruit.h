@@ -90,7 +90,7 @@ public:
         d = Vector(-d.getY(), d.getX());
         float n = sqrt(d.getSquaredLength()) ;
         d = d*(1/(n)) ;
-        Vector ortV = d* ( (v * d) * g )  ;
+        Vector ortV = d* ( (v * d))  ;
         //v = v + ortV;
 
     }
@@ -113,7 +113,7 @@ public:
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= 0)) {
+        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= -dt)) {
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;
@@ -144,7 +144,7 @@ public:
     }
 
 private:
-    float g = 10;
+    float g = 15;
 
     bool valid = true;
 

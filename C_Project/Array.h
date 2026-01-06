@@ -14,6 +14,14 @@ public:
         array = new T*[size] ;
     }
 
+    ~Array() {
+
+        for (int i = 0; i < fill; i++) {
+            delete array[i];
+        }
+
+        delete[] array;
+    }
 
     void add(T& element) {
         if (fill < size) {

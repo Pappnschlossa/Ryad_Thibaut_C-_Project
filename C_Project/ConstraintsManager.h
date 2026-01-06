@@ -78,7 +78,7 @@ public:
 
           float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
           if (v_scal > dt) {
-           _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()))/v_scal) ;
+           _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*2))/v_scal) ;
           }
 
 
