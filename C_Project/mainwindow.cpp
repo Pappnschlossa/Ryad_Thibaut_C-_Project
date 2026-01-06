@@ -43,7 +43,7 @@ void MainWindow::dropFruit(QPointF pos) {
     float startPosX = pos.x();
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
     if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
-    fruit.getP().setCoords(startPosX,-maxHeightOffset);
+    fruit.getP().setCoords(startPosX,-maxHeightOffset-r-50);
     fruit.getV().setCoords(1,0);
     fruit.id = constraints->getNbFruits() ;
     constraints->addFruit(fruit);
@@ -73,7 +73,7 @@ void MainWindow :: moveBall(QPainter &Painter){
         QString pathEnd = ".png";
         int power = pow(2, constraints->getFruit(i).getFruitType());
         QString path = pathStart + QString::number(power) + pathEnd;
-        QPixmap pixmap(path); // Il y a tous les multiples de 2 jusqu'à 2048. (4.png, 8.png, ..., 2048.png)
+        QPixmap pixmap(path);
 
         float r = constraints->getFruit(i).getRadius();
         Painter.save();
@@ -114,9 +114,25 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     pen.setWidth(15);
     painter.setPen(pen);
 
+    // draw the Bucket
     painter.drawLine(bucketRect.topLeft(), bucketRect.bottomLeft());
     painter.drawLine(bucketRect.bottomLeft(), bucketRect.bottomRight());
     painter.drawLine(bucketRect.bottomRight(), bucketRect.topRight());
+
+    // draw the next Ball
+    QString pathStart = "../assets/";
+    QString pathEnd = ".png";
+    int power = pow(2, nextFruitType);
+    QString path = pathStart + QString::number(power) + pathEnd;
+    QPixmap pixmap(path);
+    QPixmap pixmapSign("../assets/sign.png");
+    float r = 30;
+    painter.save();
+    painter.translate(bucketRect.topRight());
+    painter.translate(4*r, 2*r);
+    painter.drawPixmap(-2*r, -2*r, 4*r, 4*r, pixmapSign);
+    painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
+    painter.restore();
 
     moveBall(painter);
 }
