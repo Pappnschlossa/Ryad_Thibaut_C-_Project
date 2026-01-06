@@ -27,7 +27,7 @@ public:
 public slots:
     void setText(QString s);
 
-    void revFall(QPointF pos);
+    void dropFruit(QPointF pos);
 
     void setupWorldTransform(QPainter &painter);
 

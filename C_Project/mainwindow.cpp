@@ -6,6 +6,7 @@
 #include <QScreen>
 
 #include <math.h>
+#include <cmath>
 
 #include <QTimer>
 #include <QMouseEvent>
@@ -34,8 +35,9 @@ void MainWindow :: setText(QString s){
     ui -> label->setText(s);
 }
 
-void MainWindow::revFall(QPointF pos) {
-    int t = 1;
+void MainWindow::dropFruit(QPointF pos) {
+    srand(time(NULL));
+    int t = rand() % 3 + 1;
     Fruit fruit = Fruit(t);
     float r = fruit.getRadius();
     float startPosX = pos.x();
@@ -120,6 +122,6 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        revFall(screenToWorld.map(event->pos()));
+        dropFruit(screenToWorld.map(event->pos()));
     }
 }
