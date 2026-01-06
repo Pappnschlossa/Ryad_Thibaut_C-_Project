@@ -42,14 +42,16 @@ public:
    int col= 0 ;
    Array<Fruit*> banList = Array<Fruit*>(_fruits.getFill()) ;
    float C = 0 ;
+
+   
    for (int i = 0 ; i < _fruits.getFill(); ++i){
     if (i < _fruits.getFill() && _fruits[i]->getValid() ) {
      _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
 
-     //checks the collision and handles it
+
+     //checks the collision and handles i
 
      if( !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
-
 
       _fruits[i]->accelerate(dt);
 
@@ -71,16 +73,17 @@ public:
 
           validMove = false ;
          }else {
-          _fruits[i]->collideWith(*_fruits[j],C,dt);
 
-          float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
-          if (v_scal > dt) {
-           _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*2))/v_scal) ;
+                _fruits[i]->collideWith(*_fruits[j],C,dt);
+                if (collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , false) && _fruits[i]->getRadius() / _fruits[j]->getRadius() < 0.5 ) {
+                       _fruits[i]->getP().setY(_fruits[j]->getRadius() + _fruits[i]->getRadius() );
+                }
+                float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
+                if (v_scal > dt) {
+                      _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*2))/v_scal) ;
+
+           col = 255 ;
           }
-
-
-
-          col = 255 ;
          }
         }
        }
@@ -136,11 +139,13 @@ private:
    float C = (nextP - q) * n - fruit.getRadius() ;
    Vector delta = n*(-C) ;
 
-   fruit.nonElasticWallBounce(nextP + delta, dt);
-   //Needs to have full speed to get out the wall properly
 
-   fruit.getP().setCoords(nextP + delta);
-   fruit.getAccel() = fruit.getAccel() -  n*(fruit.getAccel()*n) ;
+    fruit.nonElasticWallBounce(nextP + delta, dt);
+    //Needs to have full speed to get out the wall properly
+
+    fruit.getP().setCoords(nextP + delta);
+    fruit.getAccel() = fruit.getAccel() -  n*(fruit.getAccel()*n) ;
+
   }
 };
 #endif //C_PROJECT_CONSTAINTSMANAGER_H

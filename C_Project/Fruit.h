@@ -124,15 +124,19 @@ public:
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= rad*(-dt))) {
+        if ( (ball.getP().getY() + ball.getRadius() - p.getY() - rad  >= - dt )) {
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;
+            if ( n + rad < ball.getRadius() ) {
+                p.setY(-500);
+            }
             float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
             Vector delta = d * (-sig/n) ;
 
             nonElasticBounce(p + delta,dt,ball);
             p.setCoords(newP + delta ) ;
+
         }            //}else {
               //  v = v - v ;
             //}
@@ -158,6 +162,7 @@ private:
     float g = 15;
 
     bool valid = true;
+
 
     float mass = 100;
     Vector accel = Vector(0,g);
