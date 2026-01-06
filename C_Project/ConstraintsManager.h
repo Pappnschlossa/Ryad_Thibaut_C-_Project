@@ -47,19 +47,17 @@ public:
      _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
 
      //checks the collision and handles it
-     if( !collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true )
-      && !collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true)
-      && !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
+
+     if( !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
+
+
       _fruits[i]->accelerate(dt);
 
       bool validMove = true ;
 
-      //_fruits[i]->getV() =       _fruits[i]->getV()*frot ;
-
-      //_fruits.shuffle(1);
 
       for (int j = 0; j < _fruits.getFill() ; j++) {
-       if (i != j && j < _fruits.getFill() ) {
+       if (i != j && j < _fruits.getFill() && _fruits[j]->getValid()) {
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
 
@@ -71,7 +69,6 @@ public:
 
           _fruits[std :: min(i,j)]->setRadius(_fruits[min]->getRadius() + 10);
 
-          //std :: string  message =  std::min(i,j) +  " killed " +  std :: max(i,j)  ;
           validMove = false ;
          }else {
           _fruits[i]->collideWith(*_fruits[j],C,dt);
@@ -93,6 +90,8 @@ public:
        _fruits[i]->moveP(_fruits[i]->getV(),dt);
       }
       }
+     collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true ) ;
+     collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true) ;
     }
 
 

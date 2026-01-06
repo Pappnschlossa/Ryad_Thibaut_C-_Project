@@ -96,7 +96,7 @@ public:
     }
 
     void nonElasticWallBounce(const Vector& p_exp,const float& dt)  {
-        v = (p_exp - p)*(0.1/dt) ;
+        v = (p_exp - p);
     }
 
 
