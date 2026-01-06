@@ -50,7 +50,7 @@ void MainWindow::dropFruit(QPointF pos) {
 
     // Ici on détermine le type du prochain fruit (souvent petit au début de la partie)
     int nbFruits = round(constraints->getNbFruits());
-    nextFruitType = rand()%std::min(nbFruits,16) / 4 + 1;
+    nextFruitType = rand()%std::min(nbFruits,15) / 3 + 1;
 
     if (constraints->getNbFruits() == 1){
         QTimer *timer = new QTimer(this);
