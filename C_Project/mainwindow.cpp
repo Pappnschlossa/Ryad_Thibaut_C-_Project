@@ -79,8 +79,11 @@ void MainWindow :: moveBall(QPainter &Painter){
         float r = constraints->getFruit(i).getRadius();
         Painter.save();
         Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
+        double rotation = constraints->getFruit(i).getP().getX()-constraints->getFruit(i).getSpawnX();
+        Painter.rotate(rotation);
         Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
+        Painter.rotate(-rotation); // to rotate back
         Painter.setPen(QPen(Qt::black, 5));
         Painter.drawLine(0, 0, constraints->getFruit(i).getV().getX(),  constraints->getFruit(i).getV().getY());
 
