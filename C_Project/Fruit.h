@@ -84,6 +84,12 @@ public:
         rad = rad*1.2;
         mass = mass*2;
     }
+    float getSpawnX() {
+        return spawnX;
+    }
+    void setSpawnX(float value) {
+        spawnX = value;
+    }
 
     const float getG() const {
         return g;
@@ -165,6 +171,7 @@ private:
     Vector p =  Vector(10,10);;
     float rad = 25;
     int type = 1;
+    float spawnX = 0.0F;
     bool allowAccel = true ;
 
 };
