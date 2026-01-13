@@ -141,7 +141,7 @@ void MainWindow :: paintEvent(QPaintEvent *event)
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        if (clickTimer.elapsed() >= 500) {
+        if (clickTimer.elapsed() >= 300) {
             clickTimer.restart();
             dropFruit(screenToWorld.map(event->pos()));
         }
