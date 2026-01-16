@@ -44,6 +44,7 @@ void MainWindow::dropFruit(QPointF pos) {
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
     if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
     fruit.getP().setCoords(startPosX,-maxHeightOffset-r-50);
+    fruit.setLoseCondition(-maxHeightOffset-r-75);
     fruit.getV().setCoords(1,0);
     fruit.setSpawnX(startPosX);
     fruit.id = constraints->getNbFruits() ;

@@ -88,6 +88,10 @@ public:
       }
       if (validMove) {
        _fruits[i]->moveP(_fruits[i]->getV(),dt);
+       if (_fruits[i]->getP().getY() < _fruits[i]->getLoseCondition())
+       {
+        std::cout << "You lose" << std::endl;
+       }
       }
       }
      collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true ) ;
