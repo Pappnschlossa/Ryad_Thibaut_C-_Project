@@ -62,13 +62,18 @@ public:
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
 
-         if (_fruits[i]->getRadius() == _fruits[j]->getRadius()) {
+         if (_fruits[i]->getFruitType() == _fruits[j]->getFruitType()) {
           int max = std :: max(i,j) ;
           int min = std :: min(i,j) ;
           _fruits[max]->setValid(false);
           banList.add(_fruits[max]) ;
 
           _fruits[std :: min(i,j)]->growFruit();
+          if (_fruits[std :: min(i,j)]->getFruitType() >= 12)
+          {
+           RestartBox box(parentWidget(), true);
+           box.exec();
+          }
 
           validMove = false ;
          }else {
