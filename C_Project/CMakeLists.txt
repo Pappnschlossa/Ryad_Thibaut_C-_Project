@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         ConstraintsManager.h
         Array.cpp
         Array.h
+        RestartBox.cpp
+        RestartBox.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

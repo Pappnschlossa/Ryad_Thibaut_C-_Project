@@ -11,9 +11,10 @@
 #include <vector>
 
 #include "Array.h"
+#include "RestartBox.h"
 
 
- class ConstraintsManager {
+class ConstraintsManager : public QWidget {
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
  {
@@ -63,13 +64,18 @@ public:
         C = _fruits[i]->colliding(*_fruits[j],dt) ;
         if (C < 0) {
 
-         if (_fruits[i]->getRadius() == _fruits[j]->getRadius()) {
+         if (_fruits[i]->getFruitType() == _fruits[j]->getFruitType()) {
           int max = std :: max(i,j) ;
           int min = std :: min(i,j) ;
           _fruits[max]->setValid(false);
           banList.add(_fruits[max]) ;
 
           _fruits[std :: min(i,j)]->growFruit();
+          if (_fruits[std :: min(i,j)]->getFruitType() >= 12)
+          {
+           RestartBox box(parentWidget(), true);
+           box.exec();
+          }
 
           validMove = false ;
          }else {
@@ -94,6 +100,11 @@ public:
       }
       if (validMove) {
        _fruits[i]->moveP(_fruits[i]->getV(),dt);
+       if (_fruits[i]->getP().getY() < _fruits[i]->getLoseCondition())
+       {
+        RestartBox box(parentWidget(), false);
+        box.exec();
+       }
       }
       }
      collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true ) ;

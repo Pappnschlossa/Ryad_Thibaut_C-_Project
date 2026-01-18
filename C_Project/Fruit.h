@@ -30,7 +30,7 @@ public:
     };
 
     ~Fruit() {
-        std :: cout << " Fruit of id " << id << " at adress " << " was destroyed " <<"\n" ;
+        std :: cout << " Fruit of id " << id << " at adress " << " was destroyed " << std::endl ;
     }
 
 
@@ -81,8 +81,14 @@ public:
     }
     void growFruit() {
         type += 1;
+        loseCondition += static_cast<int>(rad);
         rad = rad*1.2;
+        loseCondition -= static_cast<int>(rad);
         mass = mass + 10 ;
+        if (type == 12)
+        {
+            std::cout << "Bien joué !" << std::endl;
+        }
     }
     float getSpawnX() {
         return spawnX;
@@ -145,6 +151,16 @@ public:
         return valid ;
     }
 
+    void setLoseCondition(float f)
+    {
+        loseCondition = static_cast<int>(f);
+    }
+
+    int getLoseCondition() const
+    {
+        return loseCondition;
+    }
+
 private:
     float g = 30;
 
@@ -159,6 +175,7 @@ private:
     int type = 1;
     float spawnX = 0.0F;
     bool allowAccel = true ;
+    int loseCondition = -10000;
 
 };
 

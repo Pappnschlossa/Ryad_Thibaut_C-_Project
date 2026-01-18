@@ -42,7 +42,8 @@ void MainWindow::dropFruit(QPointF pos) {
     float startPosX = pos.x();
     if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
     if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
-    fruit.getP().setCoords(startPosX,-maxHeightOffset-r-50);
+    fruit.getP().setCoords(startPosX,-maxHeightOffset-r);
+    fruit.setLoseCondition(-maxHeightOffset-r-10);
     fruit.getV().setCoords(1,0);
     fruit.setSpawnX(startPosX);
     fruit.id = constraints->getNbFruits() ;
@@ -74,7 +75,7 @@ void MainWindow :: moveBall(QPainter &Painter){
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QString pathStart = "../assets/";
-        QString pathEnd = ".png";
+        QString pathEnd = ".png"; // Change to svg to have fruits instead of numbers. Warning : Fruit svgs are not well scaled yet.
         int power = pow(2, constraints->getFruit(i).getFruitType());
         QString path = pathStart + QString::number(power) + pathEnd;
         QPixmap pixmap(path);
@@ -117,6 +118,12 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     screenToWorld = worldToScreen.inverted();
 
     // Draw in "world" coordinates
+    QPen penGray(Qt::gray);
+    penGray.setWidth(15);
+    painter.setPen(penGray);
+
+    painter.drawLine(bucketRect.topLeft(), bucketRect.topRight());
+
     QPen pen(Qt::black);
     pen.setWidth(15);
     painter.setPen(pen);
