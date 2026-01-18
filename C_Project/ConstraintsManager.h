@@ -40,8 +40,7 @@ public:
 
 
   void runSimulation(float maxHeight, float maxWidth,float frot) {
-   int col= 0 ;
-   Array<Fruit*> banList = Array<Fruit*>(_fruits.getFill()) ;
+   int banSize = 0 ;
    float C = 0 ;
 
 
@@ -67,11 +66,13 @@ public:
          if (_fruits[i]->getFruitType() == _fruits[j]->getFruitType()) {
           int max = std :: max(i,j) ;
           int min = std :: min(i,j) ;
-          _fruits[max]->setValid(false);
-          banList.add(_fruits[max]) ;
 
-          _fruits[std :: min(i,j)]->growFruit();
-          if (_fruits[std :: min(i,j)]->getFruitType() >= 12)
+          _fruits[max]->setValid(false);
+          banList.add(max) ;
+          banSize++ ;
+
+          _fruits[min]->growFruit();
+          if (_fruits[min]->getFruitType() >= 12)
           {
            RestartBox box(parentWidget(), true);
            box.exec();
@@ -91,7 +92,6 @@ public:
                 if (v_scal > dt) {
                       _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*100))/v_scal) ;
 
-           col = 255 ;
           }
          }
         }
@@ -113,10 +113,12 @@ public:
 
 
    }
-   int banSize = banList.getFill() ;
+
    for (int i = 0 ; i < banSize ; i++) {
-      _fruits.remove(**banList[i]) ;
+      _fruits.removeIndex(*banList[i]) ;
+
    }
+   banList.resetFill() ;
 
   }
 
@@ -128,7 +130,9 @@ public:
   }
 
 private:
-  Array<Fruit>  _fruits =  Array<Fruit>(100);
+  Array<Fruit>  _fruits =   Array<Fruit>(100);
+  Array<int> banList = Array<int>(100) ;
+
 
   float dt ;
 

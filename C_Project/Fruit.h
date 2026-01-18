@@ -30,7 +30,7 @@ public:
     };
 
     ~Fruit() {
-        std :: cout << " Fruit of id " << id << " at adress " << " was destroyed " << std::endl ;
+       // std :: cout << " Fruit of id " << id << " at adress "  << this << " was destroyed " << std::endl ;
     }
 
 

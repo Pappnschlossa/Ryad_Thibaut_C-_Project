@@ -41,14 +41,6 @@ public:
         }
     }
 
-    void remove(const T& element) {
-
-        for (int i = 0 ; i < fill ; i++) {
-            if (&array[i] == &element ) {
-                removeIndex(i) ;
-            }
-        }
-    }
 
     int getFill() const {
         return fill ;
@@ -94,21 +86,28 @@ public:
         }
     }
 
-private:
-    T* array ;
-    int fill  = 0;
-    int size ;
-
     void removeIndex(int ind) {
 
         if (ind < fill) {
             for (int i = ind; i < fill ; i++) {
                 array[i] = array[i + 1] ;
             }
+
+            fill -= 1 ;
         }
 
-        fill -= 1 ;
     }
+
+    void resetFill() {
+        fill = 0;
+    }
+
+
+private:
+    T* array ;
+    int fill  = 0;
+    int size ;
+
 
 
 };

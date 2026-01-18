@@ -74,24 +74,29 @@ void MainWindow :: moveBall(QPainter &Painter){
 
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
-        QString pathStart = "../assets/";
-        QString pathEnd = ".png"; // Change to svg to have fruits instead of numbers. Warning : Fruit svgs are not well scaled yet.
-        int power = pow(2, constraints->getFruit(i).getFruitType());
-        QString path = pathStart + QString::number(power) + pathEnd;
-        QPixmap pixmap(path);
+        if (constraints->getFruit(i).getValid()) {
+            QString pathStart = "../assets/";
+            QString pathEnd = ".png"; // Change to svg to have fruits instead of numbers. Warning : Fruit svgs are not well scaled yet.
+            int power = pow(2, constraints->getFruit(i).getFruitType());
+            QString path = pathStart + QString::number(power) + pathEnd;
+            QPixmap pixmap(path);
 
-        float r = constraints->getFruit(i).getRadius();
-        Painter.save();
-        Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
-        double rotation = 1.5*(constraints->getFruit(i).getP().getX()-constraints->getFruit(i).getSpawnX());
-        Painter.rotate(rotation);
-        Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
-        Painter.rotate(-rotation); // to rotate back
-        // Painter.setPen(QPen(Qt::black, 5));
-        // Painter.drawLine(0, 0, constraints->getFruit(i).getV().getX(),  constraints->getFruit(i).getV().getY());
+            float r = constraints->getFruit(i).getRadius();
+            Painter.save();
+            Painter.translate(constraints->getFruit(i).getP().getX(), constraints->getFruit(i).getP().getY());
+            double rotation = 1.5*(constraints->getFruit(i).getP().getX()-constraints->getFruit(i).getSpawnX());
+            Painter.rotate(rotation);
+            Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
-        Painter.restore();
+            Painter.rotate(-rotation); // to rotate back
+            // Painter.setPen(QPen(Qt::black, 5));
+            // Painter.drawLine(0, 0, constraints->getFruit(i).getV().getX(),  constraints->getFruit(i).getV().getY());
+
+            Painter.restore();
+        }else {
+            std:: cout << "Warning, invalid balls are still loaded in memory ! \n" ;
+        }
     }
 }
 
