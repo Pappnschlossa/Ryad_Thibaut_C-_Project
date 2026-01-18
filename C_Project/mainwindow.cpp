@@ -87,8 +87,8 @@ void MainWindow :: moveBall(QPainter &Painter){
         Painter.drawPixmap(-r, -r, 2*r, 2*r, pixmap);
 
         Painter.rotate(-rotation); // to rotate back
-        Painter.setPen(QPen(Qt::black, 5));
-        Painter.drawLine(0, 0, constraints->getFruit(i).getV().getX(),  constraints->getFruit(i).getV().getY());
+        // Painter.setPen(QPen(Qt::black, 5));
+        // Painter.drawLine(0, 0, constraints->getFruit(i).getV().getX(),  constraints->getFruit(i).getV().getY());
 
         Painter.restore();
     }
