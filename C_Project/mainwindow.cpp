@@ -40,8 +40,8 @@ void MainWindow::dropFruit(QPointF pos) {
     Fruit fruit = Fruit(nextFruitType);
     float r = fruit.getRadius();
     float startPosX = pos.x();
-    if (startPosX < r - (float) bucketRect.width()/2) {startPosX = r - (float) bucketRect.width()/2;}
-    if (startPosX > (float) bucketRect.width()/2 - r) {startPosX = (float) bucketRect.width()/2 - r;}
+    if (startPosX < r - (float) bucketRect.width()/2 + 1) {startPosX = r - (float) bucketRect.width()/2 + 1;}
+    if (startPosX > (float) bucketRect.width()/2 - r - 1) {startPosX = (float) bucketRect.width()/2 - r - 1;}
     fruit.getP().setCoords(startPosX,-maxHeightOffset-r);
     fruit.setLoseCondition(-maxHeightOffset-2*r);
     fruit.getV().setCoords(1,0);
