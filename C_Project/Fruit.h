@@ -111,12 +111,6 @@ public:
     }
 
 
-    /**bool collides(Fruit& ball) {
-        if ( sqrt((p - ball.getP()).getSquaredLength() ) < rad + ball.getRadius() ) {
-            return true;
-        }
-        return false;
-    }*/
     float colliding(Fruit& ball,float dt) {
         return   sqrt((ball.getP() - v*dt - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
     }

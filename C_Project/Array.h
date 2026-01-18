@@ -11,27 +11,23 @@ template<typename T>
 class Array {
 public:
     Array(int size) : size(size) {
-        array = new T*[size] ;
+        array = new T[size] ;
     }
 
     ~Array() {
-
-        for (int i = 0; i < fill; i++) {
-            delete array[i];
-        }
 
         delete[] array;
     }
 
     void add(T& element) {
         if (fill < size) {
-            array[fill] = new T( element );
+            array[fill] = T( element );
             fill += 1 ;
         }
     }
     void add(const T& element) {
         if (fill < size) {
-            array[fill] = new T( element ) ;
+            array[fill] = T( element ) ;
             fill += 1 ;
         }
     }
@@ -39,7 +35,7 @@ public:
     void remove(T& element) {
 
         for (int i = 0 ; i < fill ; i++) {
-            if (array[i] == &element ) {
+            if (&array[i] == &element ) {
                 removeIndex(i) ;
             }
         }
@@ -48,7 +44,7 @@ public:
     void remove(const T& element) {
 
         for (int i = 0 ; i < fill ; i++) {
-            if (array[i] == &element ) {
+            if (&array[i] == &element ) {
                 removeIndex(i) ;
             }
         }
@@ -73,14 +69,14 @@ public:
     }
     T* operator[](int ind) {
         if (ind >= 0 && ind < fill) {
-            return array[ind] ;
+            return &array[ind] ;
         }
         return nullptr;
     }
 
     void swap(int i, int j) {
         if (i < fill && j < fill) {
-            T* tmp = array[i] ;
+            T tmp = array[i] ;
             array[i] = array[j] ;
             array[j] = tmp ;
         }
@@ -99,7 +95,7 @@ public:
     }
 
 private:
-    T** array ;
+    T* array ;
     int fill  = 0;
     int size ;
 
