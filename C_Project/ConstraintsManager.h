@@ -11,9 +11,10 @@
 #include <vector>
 
 #include "Array.h"
+#include "RestartBox.h"
 
 
- class ConstraintsManager {
+class ConstraintsManager : public QWidget {
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
  {
@@ -90,7 +91,8 @@ public:
        _fruits[i]->moveP(_fruits[i]->getV(),dt);
        if (_fruits[i]->getP().getY() < _fruits[i]->getLoseCondition())
        {
-        std::cout << "You lose" << std::endl;
+        RestartBox box(parentWidget(), false);
+        box.exec();
        }
       }
       }

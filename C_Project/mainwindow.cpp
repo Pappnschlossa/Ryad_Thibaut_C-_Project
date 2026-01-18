@@ -115,6 +115,12 @@ void MainWindow :: paintEvent(QPaintEvent *event)
     screenToWorld = worldToScreen.inverted();
 
     // Draw in "world" coordinates
+    QPen penGray(Qt::gray);
+    penGray.setWidth(15);
+    painter.setPen(penGray);
+
+    painter.drawLine(bucketRect.topLeft(), bucketRect.topRight());
+
     QPen pen(Qt::black);
     pen.setWidth(15);
     painter.setPen(pen);
