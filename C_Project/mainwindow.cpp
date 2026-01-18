@@ -53,7 +53,6 @@ void MainWindow::dropFruit(QPointF pos) {
     // Ici on détermine le type du prochain fruit (souvent petit au début de la partie)
     int nbFruits = round(constraints->getNbFruits());
     nextFruitType = rand()%std::min(nbFruits,15) / 3 + 1;
-    nextFruitType = 5;
 
     if (constraints->getNbFruits() == 1){
         QTimer *timer = new QTimer(this);
@@ -73,7 +72,7 @@ void MainWindow :: moveBall(QPainter &Painter){
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QString pathStart = "../assets/";
-        QString pathEnd = ".png";
+        QString pathEnd = ".png"; // Change to svg to have fruits instead of numbers. Warning : Fruit svgs are not well scaled yet.
         int power = pow(2, constraints->getFruit(i).getFruitType());
         QString path = pathStart + QString::number(power) + pathEnd;
         QPixmap pixmap(path);
