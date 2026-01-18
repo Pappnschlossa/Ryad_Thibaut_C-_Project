@@ -27,7 +27,7 @@ public:
     }
     void add(const T& element) {
         if (fill < size) {
-            array[fill] = T( element ) ;
+            array[fill] = element ;
             fill += 1 ;
         }
     }

@@ -17,8 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
       bucketRect(-250,-300,500,600)
 {
     ui->setupUi(this);
-    //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
-    //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
+
     createConstraintsManager();
     maxHeightOffset = height()/2;
     widthOffset = width()/2;

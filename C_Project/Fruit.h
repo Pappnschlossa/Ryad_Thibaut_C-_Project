@@ -82,7 +82,7 @@ public:
     void growFruit() {
         type += 1;
         rad = rad*1.2;
-        mass = mass*2;
+        mass = mass + 10 ;
     }
 
     const float getG() const {
@@ -97,12 +97,6 @@ public:
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
         v = (p_exp - p)*(1/dt) + accel*(1/dt) ;
-        Vector d = ball.getP() - p ;
-        d = Vector(-d.getY(), d.getX());
-        float n = sqrt(d.getSquaredLength()) ;
-        d = d*(1/(n)) ;
-        Vector ortV = d* ( (v * d))  ;
-        //v = v + ortV;
 
     }
 
