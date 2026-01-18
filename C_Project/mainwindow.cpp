@@ -61,7 +61,11 @@ void MainWindow::revFall(QPointF pos) {
 void MainWindow :: moveBall(QPainter &Painter){
     float maxHeight = bucketRect.height()-maxHeightOffset;
     float maxWidth = bucketRect.width();
-    constraints->runSimulation(maxHeight,maxWidth, 0.95);
+    for (int i = 0 ; i < simulationCycles ; ++i) {
+        constraints->runSimulation(maxHeight,maxWidth, 0.95);
+
+    }
+
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QString pathStart = "../assets/";
@@ -123,3 +127,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         revFall(screenToWorld.map(event->pos()));
     }
 }
+
+
+/**
+void MainWindow::keyPressEvent(QKeyEvent * event)
+{
+    if (event->key() == Qt::Key_Space) {
+        revFall(screenToWorld.map( QPoint( 100,100) ));
+    }
+}*/

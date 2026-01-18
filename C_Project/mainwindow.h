@@ -82,6 +82,8 @@ private:
     float maxHeightOffset;
     float widthOffset;
 
+    int simulationCycles = 10;
+
     void mousePressEvent(QMouseEvent *event) override;
 
 

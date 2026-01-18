@@ -96,7 +96,7 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
-        v = (p_exp - p)*(1/dt) + accel*(1/dt);
+        v = (p_exp - p)*(1/dt) + accel*(1/dt) ;
         Vector d = ball.getP() - p ;
         d = Vector(-d.getY(), d.getX());
         float n = sqrt(d.getSquaredLength()) ;
@@ -128,20 +128,13 @@ public:
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;
-            if ( n + rad < ball.getRadius() ) {
-                p.setY(-500);
-            }
+
             float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
             Vector delta = d * (-sig/n) ;
 
             nonElasticBounce(p + delta,dt,ball);
             p.setCoords(newP + delta ) ;
-
-        }            //}else {
-              //  v = v - v ;
-            //}
-
-        //accel.setY(0);
+        }
     }
 
     void setAllowAccel(const bool b) {
@@ -159,7 +152,7 @@ public:
     }
 
 private:
-    float g = 15;
+    float g = 30;
 
     bool valid = true;
 

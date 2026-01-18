@@ -17,7 +17,7 @@
 public:
  ConstraintsManager( const QMainWindow& context ,  int nbF )
  {
-  dt = 0.01;
+  dt = 0.00005;
  }
 
   ConstraintsManager();
@@ -43,7 +43,7 @@ public:
    Array<Fruit*> banList = Array<Fruit*>(_fruits.getFill()) ;
    float C = 0 ;
 
-   
+
    for (int i = 0 ; i < _fruits.getFill(); ++i){
     if (i < _fruits.getFill() && _fruits[i]->getValid() ) {
      _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
@@ -51,7 +51,7 @@ public:
 
      //checks the collision and handles i
 
-     if( !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true)) {
+     if( !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true) || true) {
 
       _fruits[i]->accelerate(dt);
 
@@ -75,12 +75,15 @@ public:
          }else {
 
                 _fruits[i]->collideWith(*_fruits[j],C,dt);
-                if (collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , false) && _fruits[i]->getRadius() / _fruits[j]->getRadius() < 0.5 ) {
-                       _fruits[i]->getP().setY(_fruits[j]->getRadius() + _fruits[i]->getRadius() );
+                if ( (collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , false)
+                || collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),false )
+                || collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , false))
+                 && _fruits[i]->getRadius() / _fruits[j]->getRadius() < 1/(1.5) ) {
+                       _fruits[i]->getV().setY(_fruits[i]->getV().getY() + 10  );
                 }
                 float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
                 if (v_scal > dt) {
-                      _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*2))/v_scal) ;
+                      _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*100))/v_scal) ;
 
            col = 255 ;
           }
