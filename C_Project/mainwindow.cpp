@@ -18,8 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
       bucketRect(-250,-300,500,600)
 {
     ui->setupUi(this);
-    //QObject :: connect(ui -> but2, SIGNAL(clicked()), this,SLOT(setText("Oui")));
-    //QObject :: connect(ui -> pushButton, SIGNAL(clicked()), this,SLOT(revFall()));
+
     createConstraintsManager();
     maxHeightOffset = height()/2;
     widthOffset = width()/2;
@@ -67,7 +66,11 @@ void MainWindow::dropFruit(QPointF pos) {
 void MainWindow :: moveBall(QPainter &Painter){
     float maxHeight = bucketRect.height()-maxHeightOffset;
     float maxWidth = bucketRect.width();
-    constraints->runSimulation(maxHeight,maxWidth, 0.95);
+    for (int i = 0 ; i < simulationCycles ; ++i) {
+        constraints->runSimulation(maxHeight,maxWidth, 0.95);
+
+    }
+
 
     for (int i = 0; i < constraints->getNbFruits() ; i++) {
         QString pathStart = "../assets/";
@@ -151,3 +154,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         }
     }
 }
+
+
+/**
+void MainWindow::keyPressEvent(QKeyEvent * event)
+{
+    if (event->key() == Qt::Key_Space) {
+        revFall(screenToWorld.map( QPoint( 100,100) ));
+    }
+}*/

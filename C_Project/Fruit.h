@@ -82,7 +82,7 @@ public:
     void growFruit() {
         type += 1;
         rad = rad*1.2;
-        mass = mass*2;
+        mass = mass + 10 ;
     }
     float getSpawnX() {
         return spawnX;
@@ -102,13 +102,7 @@ public:
         v = v - n * 2 * (v*n) ;
     }
     void nonElasticBounce(const Vector& p_exp,const float& dt, Fruit& ball)  {
-        v = (p_exp - p)*(1/dt) + accel*(1/dt);
-        Vector d = ball.getP() - p ;
-        d = Vector(-d.getY(), d.getX());
-        float n = sqrt(d.getSquaredLength()) ;
-        d = d*(1/(n)) ;
-        Vector ortV = d* ( (v * d))  ;
-        //v = v + ortV;
+        v = (p_exp - p)*(1/dt) + accel*(1/dt) ;
 
     }
 
@@ -117,12 +111,6 @@ public:
     }
 
 
-    /**bool collides(Fruit& ball) {
-        if ( sqrt((p - ball.getP()).getSquaredLength() ) < rad + ball.getRadius() ) {
-            return true;
-        }
-        return false;
-    }*/
     float colliding(Fruit& ball,float dt) {
         return   sqrt((ball.getP() - v*dt - p ).getSquaredLength()) - (rad + ball.getRadius()) ;
     }
@@ -130,20 +118,17 @@ public:
 
 
     void collideWith(Fruit& ball, const float C,const float& dt) {
-        if ( (ball.getP().getY() > p.getY()) && (v.getY() >= rad*(-dt))) {
+        if ( (ball.getP().getY() + ball.getRadius() - p.getY() - rad  >= - dt )) {
             Vector newP = p + v*dt ;
             Vector d =   newP - ball.getP() ;
             float n = sqrt(d.getSquaredLength()) ;
+
             float sig = ( (1/mass)/( (1/mass) + (1/ball.getMass()) ) )*C ;
             Vector delta = d * (-sig/n) ;
 
             nonElasticBounce(p + delta,dt,ball);
             p.setCoords(newP + delta ) ;
-        }            //}else {
-              //  v = v - v ;
-            //}
-
-        //accel.setY(0);
+        }
     }
 
     void setAllowAccel(const bool b) {
@@ -161,9 +146,10 @@ public:
     }
 
 private:
-    float g = 15;
+    float g = 30;
 
     bool valid = true;
+
 
     float mass = 100;
     Vector accel = Vector(0,g);

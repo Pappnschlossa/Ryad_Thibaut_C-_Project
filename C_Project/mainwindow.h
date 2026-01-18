@@ -86,6 +86,8 @@ private:
     int nextFruitType = 1;
     QElapsedTimer clickTimer;
 
+    int simulationCycles = 10;
+
     void mousePressEvent(QMouseEvent *event) override;
 
 
