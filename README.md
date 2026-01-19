@@ -11,7 +11,8 @@ This project was coded in C++ implementing a Qt interface.
 ## User Input
 
 After running main, the user clicks on the screen wherever he wants to place his next fruit.\
-The type of the next fruit is indicated on the top right of the screen.
+The type of the next fruit is indicated on the top right of the screen.\
+You can play with fruit assets by changing ``png`` to ``svg`` at line 75 in the mainwindow.cpp file. 
 
 ## Elements of this project we are proud of
 
