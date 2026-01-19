@@ -16,9 +16,12 @@ The type of the next fruit is indicated on the top right of the screen.
 ## Elements of this project we are proud of
 
 - The resizable window (yes it is resizable, try it yourself !)
-- 
+- Stable physics for a game that is pretty demanding in terms of ball to ball collision. More specifically when balls are merging together.
+- A simple yet satisfying UI
+- A catchy gameplay loop.
 
 ## Problems we had while working on this project
 
 - Printing with CLion did not work as intended, when running main. We later found out that launching the app in Debug mode fixes this.
-- 
+- The equations as written in the paper led to a really unstable physic engine, we had to modify and test a lot to make it more stable.
+- Setting up the compiler for Clion was tricky.
