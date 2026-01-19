@@ -5,7 +5,6 @@
 #include "Fruit.h"
 #include <QMainWindow>
 #include <math.h>
-#include <QPainter>
 #include <QElapsedTimer>
 #include "ConstraintsManager.h"
 
@@ -21,12 +20,11 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() ;
 
 
 
 public slots:
-    void setText(QString s);
 
     void dropFruit(QPointF pos);
 
@@ -58,11 +56,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
-    int y;
-
-    int x ;
-
-    bool falling = false;
 
     void createConstraintsManager() {
         constraints  =  new ConstraintsManager(*this,nb_balls);
@@ -70,8 +63,6 @@ private:
 
     int nb_balls = 0 ;
     ConstraintsManager* constraints ;
-    int i = 0 ;
-    //Fruit ball2;
 
     int BASE_WIDTH  = 800;
     int BASE_HEIGHT = 600;

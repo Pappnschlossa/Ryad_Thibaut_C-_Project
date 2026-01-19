@@ -5,7 +5,6 @@
 #ifndef C_PROJECT_VECTOR_H
 #define C_PROJECT_VECTOR_H
 #include <iostream>
-#include <math.h>
 #include <qstring.h>
 
 
@@ -17,7 +16,7 @@ public:
     Vector(const Vector& v) : _x(v.getX()), _y(v.getY()) {}
 
     Vector(){}
-    ~Vector(){}
+    ~Vector() = default ;
 
 
     const float getX() const {
@@ -87,14 +86,6 @@ public:
     std:: string  toString() {
         return "Vector(" + std::to_string(_x) + "," +  std::to_string(_y) + ")" ;
     }
-    bool isNull() {
-        if (_x == 0 && _y == 0) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
 
 
 private:

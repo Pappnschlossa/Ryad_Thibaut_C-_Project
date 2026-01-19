@@ -39,89 +39,7 @@ public:
   }
 
 
-  void runSimulation(float maxHeight, float maxWidth,float frot) {
-   int banSize = 0 ;
-   float C = 0 ;
-
-
-   for (int i = 0 ; i < _fruits.getFill(); ++i){
-    if (i < _fruits.getFill() && _fruits[i]->getValid() ) {
-     _fruits[i]->getAccel().setY(_fruits[i]->getG()) ;
-
-
-     //checks the collision and handles i
-
-     if( !collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , true) || true) {
-
-      _fruits[i]->accelerate(dt);
-
-      bool validMove = true ;
-
-
-      for (int j = 0; j < _fruits.getFill() ; j++) {
-       if (i != j && j < _fruits.getFill() && _fruits[j]->getValid() ) {
-        C = _fruits[i]->colliding(*_fruits[j],dt) ;
-        if (C < 0) {
-
-         if (_fruits[i]->getFruitType() == _fruits[j]->getFruitType()) {
-          int max = std :: max(i,j) ;
-          int min = std :: min(i,j) ;
-
-          _fruits[max]->setValid(false);
-          banList.add(max) ;
-          banSize++ ;
-
-          _fruits[min]->growFruit();
-          if (_fruits[min]->getFruitType() >= 12)
-          {
-           RestartBox box(parentWidget(), true);
-           box.exec();
-          }
-
-          validMove = false ;
-         }else {
-
-                _fruits[i]->collideWith(*_fruits[j],C,dt);
-                if ( (collidePlan(*_fruits[i],Vector(0,maxHeight), Vector(0,-1) , false)
-                || collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),false )
-                || collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , false))
-                 && _fruits[i]->getRadius() / _fruits[j]->getRadius() < 1/(1.5) ) {
-                       _fruits[i]->getV().setY(_fruits[i]->getV().getY() + 10  );
-                }
-                float v_scal = sqrt(_fruits[i]->getV().getSquaredLength()) ;
-                if (v_scal > dt) {
-                      _fruits[i]->getV()= _fruits[i]->getV()* ((std :: min(v_scal,_fruits[i]->getRadius()*100))/v_scal) ;
-
-          }
-         }
-        }
-       }
-
-      }
-      if (validMove) {
-       _fruits[i]->moveP(_fruits[i]->getV(),dt);
-       if (_fruits[i]->getP().getY() < _fruits[i]->getLoseCondition())
-       {
-        RestartBox box(parentWidget(), false);
-        box.exec();
-       }
-      }
-      }
-     collidePlan(*_fruits[i],Vector(-maxWidth/2,0), Vector(1,0),true ) ;
-     collidePlan(*_fruits[i],Vector(maxWidth/2,0), Vector(-1,0) , true) ;
-    }
-
-
-   }
-
-   for (int i = 0 ; i < banSize ; i++) {
-      _fruits.removeIndex(*banList[i]) ;
-
-   }
-   banList.resetFill() ;
-
-  }
-
+  void runSimulation(float maxHeight, float maxWidth) ;
 
 
 
@@ -130,8 +48,8 @@ public:
   }
 
 private:
-  Array<Fruit>  _fruits =   Array<Fruit>(100);
-  Array<int> banList = Array<int>(100) ;
+  Array<Fruit>  _fruits =   Array<Fruit>(200);
+  Array<int> banList = Array<int>(200) ;
 
 
   float dt ;
@@ -158,7 +76,7 @@ private:
    Vector delta = n*(-C) ;
 
 
-    fruit.nonElasticWallBounce(nextP + delta, dt);
+    fruit.nonElasticWallBounce(nextP + delta);
     //Needs to have full speed to get out the wall properly
 
     fruit.getP().setCoords(nextP + delta);

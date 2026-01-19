@@ -21,7 +21,7 @@ public:
 
     void add(T& element) {
         if (fill < size) {
-            array[fill] = T( element );
+            array[fill] = element ;
             fill += 1 ;
         }
     }
@@ -29,15 +29,6 @@ public:
         if (fill < size) {
             array[fill] = element ;
             fill += 1 ;
-        }
-    }
-
-    void remove(T& element) {
-
-        for (int i = 0 ; i < fill ; i++) {
-            if (&array[i] == &element ) {
-                removeIndex(i) ;
-            }
         }
     }
 
@@ -66,25 +57,6 @@ public:
         return nullptr;
     }
 
-    void swap(int i, int j) {
-        if (i < fill && j < fill) {
-            T tmp = array[i] ;
-            array[i] = array[j] ;
-            array[j] = tmp ;
-        }
-    }
-
-    void shuffle(int nbSwaps) {
-        if (nbSwaps > 0){
-            srand(time(NULL));
-            for ( int i = 0 ; i < nbSwaps ; i++) {
-
-                int a = rand() % fill ;
-                int b = rand() % fill ;
-                swap( a, b) ;
-            }
-        }
-    }
 
     void removeIndex(int ind) {
 

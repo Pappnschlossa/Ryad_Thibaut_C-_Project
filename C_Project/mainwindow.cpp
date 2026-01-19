@@ -30,10 +30,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow :: setText(QString s){
-   // float maxR = constraints->constraints->getFruit(i).getRadius();
-    ui -> label->setText(s);
-}
 
 void MainWindow::dropFruit(QPointF pos) {
     srand(time(NULL));
@@ -46,7 +42,7 @@ void MainWindow::dropFruit(QPointF pos) {
     fruit.setLoseCondition(-maxHeightOffset-2*r);
     fruit.getV().setCoords(1,0);
     fruit.setSpawnX(startPosX);
-    fruit.id = constraints->getNbFruits() ;
+
     constraints->addFruit(fruit);
 
     // Ici on détermine le type du prochain fruit (souvent petit au début de la partie)
@@ -68,12 +64,12 @@ void MainWindow :: moveBall(QPainter &Painter){
     float maxHeight = bucketRect.height()-maxHeightOffset;
     float maxWidth = bucketRect.width();
     for (int i = 0 ; i < simulationCycles ; ++i) {
-        constraints->runSimulation(maxHeight,maxWidth, 0.95);
+        constraints->runSimulation(maxHeight,maxWidth);
 
     }
 
-
-    for (int i = 0; i < constraints->getNbFruits() ; i++) {
+    int nbFruit = constraints->getNbFruits() ;
+    for (int i = 0; i < nbFruit ; i++) {
         if (constraints->getFruit(i).getValid()) {
             QString pathStart = "../assets/";
             QString pathEnd = ".png"; // Change to svg to have fruits instead of numbers. Warning : Fruit svgs are not well scaled yet.
@@ -168,10 +164,3 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 }
 
 
-/**
-void MainWindow::keyPressEvent(QKeyEvent * event)
-{
-    if (event->key() == Qt::Key_Space) {
-        revFall(screenToWorld.map( QPoint( 100,100) ));
-    }
-}*/
